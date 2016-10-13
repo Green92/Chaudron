@@ -1,4 +1,4 @@
-APP = sensors
+APP = proto
 
 include $(SDK_DIR)/Makefile.defs
 

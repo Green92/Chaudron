@@ -7,6 +7,10 @@
  */
 #include "assets.gen.h"
 
+#include "model/cube.hpp"
+#include "model/role.hpp"
+#include "model/roles/village.hpp"
+
 /**
  * Espace de nom par defaut
  * 

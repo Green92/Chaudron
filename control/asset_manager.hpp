@@ -3,12 +3,14 @@
 
 #include "../assets.gen.h"
 
+#include "../model/role.hpp"
+
 #define NUM_IMG 10
 
 using namespace Sifteo;
 
 typedef struct paire {
-	const char *key;
+	const Role key;
 	const AssetImage * image;
 } Paire;
 
@@ -22,9 +24,9 @@ class AssetManager {
 
 	static const Paire images[NUM_IMG];
 
-	static const AssetImage * getByName(const char *name) {
+	static const AssetImage * getByRole(Role role) {
 		for (int i=0; i<NUM_IMG; i++) {
-			if (strncmp(name, images[i].key, 30) == 0) {
+			if (role == images[i].key) {
 				return images[i].image;
 			}
 		}

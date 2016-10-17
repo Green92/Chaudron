@@ -9,9 +9,7 @@
 
 #include "control/asset_manager.hpp"
 
-#include "model/cube.hpp"
-#include "model/role.hpp"
-#include "model/roles/village_role.hpp"
+#include "control/game.hpp"
 
 /**
  * Espace de nom par defaut
@@ -28,60 +26,10 @@ static Metadata M = Metadata()
     .icon(Icon)
     .cubeRange(0, CUBE_ALLOCATION);
 
-/**
- * Contiendra le point d'acces au "Tampon video" de chaque cube.
- */
-static VideoBuffer vbuf[CUBE_ALLOCATION];
-
-void setBgImage(unsigned id, const AssetImage& image)
-{
-    vbuf[id].bg0.image(vec(0,0), image);
-}
-
-void onConnect(void* ctxt, unsigned id)
-{
-    vbuf[id].attach(id);
-    vbuf[id].initMode(BG0_BG1);
-
-    setBgImage(id, Background);
-}
-
-void onNeighborAdd(
-	void* ctxt, unsigned firstID,
-    unsigned firstSide, unsigned secondID,
-    unsigned secondSide) {
-
-   setBgImage(firstID, Background2);
-   setBgImage(secondID, Background2);
-}
-
-void onNeighborRemove(
-    void* ctxt, unsigned firstID,
-    unsigned firstSide, unsigned secondID,
-    unsigned secondSide) {
-
-    setBgImage(firstID, Background);
-    setBgImage(secondID, Background);
-}
-
  void main() {
 
- 	Events::cubeConnect.set(onConnect);
- 	Events::neighborAdd.set(onNeighborAdd);
-    Events::neighborRemove.set(onNeighborRemove);
+ 	static Game game;
 
- 	// Handle already-connected cubes
-    for (CubeID cube : CubeSet::connected())
-    {
-      onConnect(NULL, cube);
-    }
+    game.run();
 
- 	// We're entirely event-driven. Everything is
-    // updated by SensorListener's event callbacks.
-    TimeStep ts;
-    while (1)
-    {
-        System::paint();
-        ts.next();
-    }
  }

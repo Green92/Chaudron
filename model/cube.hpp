@@ -3,8 +3,6 @@
 
 #include "role.hpp"
 
-using namespace Sifteo;
-
 class Cube {
 
 	private:

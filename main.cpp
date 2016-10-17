@@ -7,21 +7,17 @@
  */
 #include "assets.gen.h"
 
+#include "control/asset_manager.hpp"
+
 #include "model/cube.hpp"
 #include "model/role.hpp"
-#include "model/roles/village.hpp"
+#include "model/roles/village_role.hpp"
 
 /**
  * Espace de nom par defaut
  * 
  */
 using namespace Sifteo;
-
-/**
- * Charge les assets en memoire
- */
-static AssetSlot MainSlot = AssetSlot::allocate()
-    .bootstrap(GameAssets);
 
 /**
  * ?? (definit des meta donnees)

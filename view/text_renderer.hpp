@@ -6,24 +6,17 @@
 class TextRenderer : public AbstractRenderer {
 
 	private:
-		const char *textFromRole(Role role) {
-			switch (role) {
-				case VILLAGE: 	return "Village";
-				case WATER:		return "Water";
-				case FIRE:		return "Fire";
-				case LIFE:		return "Life";
-				case GROUND:	return "Ground";
-				case EMPTY:		return "Empty";
-				case STEAM:		return "Steam";
-				case FIELD:		return "Field";
-			}
-
-			return "Error";
+		const char *textFromRole(const Role role) const {
+			return Roles::getRoleName(role);
 		}
 
 	protected:
 		Sifteo::VideoMode getVideoMode() const {
 			return BG0_ROM;
+		}
+
+		void renderHUD(VideoBuffer *videoBuffer) {
+
 		}
 
 		void render(unsigned char cubeId, VideoBuffer *videoBuffer, Role role) {

@@ -9,7 +9,7 @@ class AbstractRenderer {
 		VideoBuffer m_vbufs[MAX_CUBES];
 		unsigned char nbCubes = 0;
 
-		VideoBuffer *getVideoBuffer(unsigned char cubeID) {
+		inline VideoBuffer *getVideoBuffer(unsigned char cubeID) {
 			return m_vbufs + cubeID;
 		}
 
@@ -24,9 +24,13 @@ class AbstractRenderer {
 			nbCubes++;
 		}
 
-		void update(Role *roles) {
+		void updateCube(unsigned char cubeId, Role *roles) {
+			render(cubeId, getVideoBuffer(cubeId), roles[cubeId]);
+		}
+
+		void updateAll(Role *roles) {
 			for (unsigned char i = 0; i < nbCubes; i++) {
-				render(i, getVideoBuffer(i), roles[i]);
+				updateCube(i, roles);
 			}
 		}
 };

@@ -25,7 +25,8 @@ class Game {
 		void onConnect(unsigned id) {
 			LOG("Cube connected: %d\n", id);
 
-			renderer.registerCube(id);			
+			renderer.registerCube(id);
+			renderer.updateCube(id, roles);		
 		}
 
 		void onNeighborRemove(unsigned firstID, unsigned firstSide, unsigned secondID, unsigned secondSide)
@@ -42,7 +43,7 @@ class Game {
 	        if (assoc != NULL) {
 	        	roles[firstID] = assoc->getResult1();
 	        	roles[secondID] = assoc->getResult2();
-	        	renderer.update(roles);
+	        	renderer.updateAll(roles);
 	        }
 	    }
 
@@ -61,8 +62,6 @@ class Game {
 			listenEvents();
 
 			System::setCubeRange(MIN_CUBES, MAX_CUBES);
-
-			renderer.update(roles);
 
 			// We're entirely event-driven. Everything is
 		    // updated by SensorListener's event callbacks.

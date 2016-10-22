@@ -23,6 +23,14 @@ class Association {
 				|| (m_item1 == item2 && m_item2 == item1);
 		}
 
+		inline Role getItem1() const {
+			return m_item1;
+		}
+
+		inline Role getItem2() const {
+			return m_item2;
+		}
+
 		inline Role getResult1() const {
 			return m_result1;
 		}

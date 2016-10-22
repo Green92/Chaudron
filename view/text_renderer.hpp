@@ -3,11 +3,20 @@
 
 #include "abstract_renderer.hpp"
 
+#include "../model/association.hpp"
+#include "../model/associations.hpp"
+
 class TextRenderer : public AbstractRenderer {
 
 	private:
-		const char *textFromRole(const Role role) const {
-			return Roles::getRoleName(role);
+		void renderAssoc(VideoBuffer *videoBuffer, const Association *assoc) {
+			videoBuffer->bg0rom.text(vec(1, 3), Roles::getRoleName(assoc->getItem1()));
+			videoBuffer->bg0rom.text(vec(1, 4), "+");
+			videoBuffer->bg0rom.text(vec(1, 5), Roles::getRoleName(assoc->getItem2()));
+			videoBuffer->bg0rom.text(vec(1, 6), "=");
+			videoBuffer->bg0rom.text(vec(1, 7), Roles::getRoleName(assoc->getResult1()));
+			videoBuffer->bg0rom.text(vec(1, 8), "+");
+			videoBuffer->bg0rom.text(vec(1, 9), Roles::getRoleName(assoc->getResult2()));
 		}
 
 	protected:
@@ -15,13 +24,20 @@ class TextRenderer : public AbstractRenderer {
 			return BG0_ROM;
 		}
 
-		void renderHUD(VideoBuffer *videoBuffer) {
-
+		virtual void renderElement(VideoBuffer *videoBuffer, const Role role) {
+			videoBuffer->bg0rom.erase();
+			videoBuffer->bg0rom.text(vec(1, 1), Roles::getRoleName(role));
 		}
 
-		void render(unsigned char cubeId, VideoBuffer *videoBuffer, Role role) {
+		virtual void renderHUD(VideoBuffer *videoBuffer, const unsigned char HUDIndex) {
 			videoBuffer->bg0rom.erase();
-			videoBuffer->bg0rom.text(vec(1, 1), textFromRole(role));
+			videoBuffer->bg0rom.text(vec(1, 1), "HUD");
+			renderAssoc(videoBuffer, Associations::getAssociation(HUDIndex));
+		}
+
+		virtual void renderVillage(VideoBuffer *videoBuffer, const VillageState villageState) {
+			videoBuffer->bg0rom.erase();
+			videoBuffer->bg0rom.text(vec(1, 1), "Village");
 		}
 };
 

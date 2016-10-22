@@ -1,32 +1,29 @@
 #include <sifteo.h>
 
+#include "constants.hpp"
+
 #include "../model/associations.hpp"
 #include "../view/text_renderer.hpp"
-
-#define MIN_CUBES 9
-#define MAX_CUBES 12
 
 using namespace Sifteo;
 
 class Game {
 
 	private:
-		Role roles[MAX_CUBES] = { 
-			VILLAGE, FIRE,
-			GROUND, LIFE,
-			WATER, EMPTY,
-			EMPTY, EMPTY,
-			EMPTY, EMPTY,
-			EMPTY, EMPTY
-		};
+
+		GameState gameState;
 
 		TextRenderer renderer;
+
+		TiltShakeRecognizer motion[MAX_CUBES];
 
 		void onConnect(unsigned id) {
 			LOG("Cube connected: %d\n", id);
 
 			renderer.registerCube(id);
-			renderer.updateCube(id, roles);		
+			renderer.updateCube(id, &gameState);
+
+			motion[id].attach(id);
 		}
 
 		void onNeighborRemove(unsigned firstID, unsigned firstSide, unsigned secondID, unsigned secondSide)
@@ -38,12 +35,46 @@ class Game {
 	    {
 	        LOG("Neighbor add: %02x:%d - %02x:%d\n", firstID, firstSide, secondID, secondSide);
 
-	        const Association *assoc = Associations::search(roles[firstID], roles[secondID]);
+	        const Association *assoc = Associations::search(gameState.cubeRoles[firstID], gameState.cubeRoles[secondID]);
 
 	        if (assoc != NULL) {
-	        	roles[firstID] = assoc->getResult1();
-	        	roles[secondID] = assoc->getResult2();
-	        	renderer.updateAll(roles);
+	        	gameState.cubeRoles[firstID] = assoc->getResult1();
+	        	gameState.cubeRoles[secondID] = assoc->getResult2();
+	        	
+	        	renderer.updateCube(firstID, &gameState);
+	        	renderer.updateCube(secondID, &gameState);
+	        }
+	    }
+
+	    void onShake(unsigned id) {
+
+	    }
+
+	    void onTilt(unsigned id) {
+
+	    }
+
+        void onAccelChange(unsigned id)
+	    {
+	        unsigned changeFlags = motion[id].update();
+	        if (changeFlags) {
+	            // Tilt/shake changed
+
+	            LOG("Tilt/shake changed, flags=%08x\n", changeFlags);
+
+	            //TODO Call onShake or/and onTilt depending of changeFlags
+	            //Require to understand the meaning of differents flags...
+	        }
+	    }
+
+	    void onTouch(unsigned id)
+	    {
+	        CubeID cube(id);
+	        LOG("Touch event on cube #%d, state=%d\n", id, cube.isTouching());
+
+	        if (cube.isTouching() && gameState.cubeRoles[id] == HUD) {
+	        	gameState.HUDIndex = (gameState.HUDIndex + 1) % ASSOCIATIONS_NUMBER;
+	        	renderer.updateCube(id, &gameState);
 	        }
 	    }
 
@@ -51,10 +82,14 @@ class Game {
 	    	Events::neighborAdd.set(&Game::onNeighborAdd, this);
         	Events::neighborRemove.set(&Game::onNeighborRemove, this);
         	Events::cubeConnect.set(&Game::onConnect, this);
+        	Events::cubeAccelChange.set(&Game::onAccelChange, this);
+        	Events::cubeTouch.set(&Game::onTouch, this);
 
         	// Handle already-connected cubes
-	        for (CubeID cube : CubeSet::connected())
+	        for (CubeID cube : CubeSet::connected()) {
 	            onConnect(cube);
+	            onAccelChange(cube);
+	        }
 	    }
 
 	public:

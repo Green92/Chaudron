@@ -1,7 +1,8 @@
 #ifndef ABSTRACT_RENDERER_HPP
 #define ABSTRACT_RENDERER_HPP
 
-#define MAX_CUBES 12
+#include "../control/constants.hpp"
+#include "../model/game_state.hpp"
 
 class AbstractRenderer {
 
@@ -15,7 +16,10 @@ class AbstractRenderer {
 
 	protected:
 		virtual Sifteo::VideoMode getVideoMode() const;
-		virtual void render(unsigned char cubeId, VideoBuffer *videoBuffer, Role role);
+		
+		virtual void renderElement(VideoBuffer *videoBuffer, const Role role);
+		virtual void renderHUD(VideoBuffer *videoBuffer, const unsigned char HUDIndex);
+		virtual void renderVillage(VideoBuffer *videoBuffer, const VillageState villageState);
 
 	public:
 		void registerCube(unsigned char cubeId) {
@@ -24,13 +28,28 @@ class AbstractRenderer {
 			nbCubes++;
 		}
 
-		void updateCube(unsigned char cubeId, Role *roles) {
-			render(cubeId, getVideoBuffer(cubeId), roles[cubeId]);
+		void updateCube(unsigned char cubeId, const GameState *gameState) {
+			
+			VideoBuffer *vBuf = getVideoBuffer(cubeId);
+
+			switch (gameState->cubeRoles[cubeId]) {
+				default:
+					renderElement(vBuf, gameState->cubeRoles[cubeId]);
+				break;
+
+				case VILLAGE:
+					renderVillage(vBuf, gameState->villageState);
+				break;
+
+				case HUD:
+					renderHUD(vBuf, gameState->HUDIndex);
+				break;
+			}
 		}
 
-		void updateAll(Role *roles) {
+		void updateAll(const GameState *gameState) {
 			for (unsigned char i = 0; i < nbCubes; i++) {
-				updateCube(i, roles);
+				updateCube(i, gameState);
 			}
 		}
 };

@@ -21,16 +21,23 @@ const static Association assocs[] = {
 	Association(GRAVEYARD, LIFE, FIELD, LIFE)
 };
 
+//Thank you to increase when adding an association
+#define ASSOCIATIONS_NUMBER 13
+
 class Associations {
 	public:
 		static const Association *search(Role item1, Role item2) {
-			for (unsigned char i=0; i<13; i++) {
+			for (unsigned char i=0; i<ASSOCIATIONS_NUMBER; i++) {
 				if (assocs[i].isSame(item1, item2)) {
 					return &assocs[i];
 				}
 			}
 
 			return NULL;
+		}
+
+		static const Association *getAssociation(unsigned char index) {
+			return &assocs[index];
 		}
 };
 

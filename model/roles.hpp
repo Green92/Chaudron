@@ -47,6 +47,15 @@ const static char *roles_names[] = {
 	"Well"
 };
 
+const static Role initialRoles[MAX_CUBES] = { 
+	VILLAGE, 	HUD,
+	FIRE, 		WATER,
+	GROUND, 	LIFE,
+	WATER, 		EMPTY,
+	EMPTY, 		EMPTY,
+	EMPTY, 		EMPTY
+};
+
 class Roles {
 	public:
 		inline static const char *getRoleName(Role role) {
@@ -55,6 +64,10 @@ class Roles {
 
 		inline static bool isPrimaryElement(Role role) {
 			return role >= FIRE && role <= WATER;
+		}
+
+		inline static Role getInitialRole(unsigned id) {
+			return initialRoles[id];
 		}
 };
 

@@ -72,9 +72,21 @@ class Game {
 	        CubeID cube(id);
 	        LOG("Touch event on cube #%d, state=%d\n", id, cube.isTouching());
 
-	        if (cube.isTouching() && gameState.cubeRoles[id] == HUD) {
-	        	gameState.HUDIndex = (gameState.HUDIndex + 1) % ASSOCIATIONS_NUMBER;
-	        	renderer.updateCube(id, &gameState);
+	        if (cube.isTouching()) {
+	        	switch (gameState.cubeRoles[id]) {
+	        		case HUD:
+	        			gameState.HUDIndex = (gameState.HUDIndex + 1) % ASSOCIATIONS_NUMBER;
+	        			renderer.updateCube(id, &gameState);
+	        		break;
+
+	        		case VILLAGE:
+	        		break;
+
+	        		default:
+	        			gameState.cubeRoles[id] = Roles::getInitialRole(id);
+	        			renderer.updateCube(id, &gameState);
+	        		break;
+	        	}
 	        }
 	    }
 

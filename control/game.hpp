@@ -113,7 +113,13 @@ class Game {
 			// We're entirely event-driven. Everything is
 		    // updated by SensorListener's event callbacks.
 		    TimeStep ts;
-		    while (true)
+		    while (
+		    	gameState
+		    		.villageState
+		    		.live(
+		    			ts.delta()
+		    		)
+		    )
 		    {
 		        System::paint();
 		        ts.next();

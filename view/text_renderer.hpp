@@ -35,9 +35,13 @@ class TextRenderer : public AbstractRenderer {
 			renderAssoc(videoBuffer, Associations::getAssociation(HUDIndex));
 		}
 
-		virtual void renderVillage(VideoBuffer *videoBuffer, const VillageState villageState) {
+		virtual void renderVillage(VideoBuffer *videoBuffer, const VillageState &villageState) {
 			videoBuffer->bg0rom.erase();
 			videoBuffer->bg0rom.text(vec(1, 1), "Village");
+
+			for (int i=0; i<villageState.getNeeds().count(); i++) {
+				videoBuffer->bg0rom.text(vec(1, 2+i), Roles::getRoleName(villageState.getNeeds()[i]));
+			}
 		}
 };
 

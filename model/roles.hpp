@@ -14,20 +14,29 @@
 //primary elements
 #define FIRE	3
 #define GROUND 	4
-#define LIFE	5
+#define TOOLS	5
 #define WATER	6
 
 //secondary elements
-#define COTTON		7
-#define RICH_GROUND	8
-#define CLAY		9
+#define STEAM		 7
+#define BRICKS  	 8
+#define WOOD		 9
+#define FIELD		 10
+#define CAMPFIRE     11
+#define FISHING_BOAT 12
 
 //tertiary elements
-#define FOREST		10
-#define FIELD		11
-#define BRICK		12
-#define GRAVEYARD	13
-#define WELL		14
+#define GRAIN_SILO	13
+#define OVEN		14
+#define STEAMBOAT	15
+#define FACTORY		16
+#define WINDMILL	17
+#define LARGE_BOAT	18
+
+//level 4 elements
+#define PORT		19
+#define RESTAURANT	20
+#define STORE		21
 
 const static char *roles_names[] = {
 	"Village", 
@@ -35,25 +44,32 @@ const static char *roles_names[] = {
 	"Empty", 
 	"Fire", 
 	"Ground", 
-	"Life", 
+	"Tools", 
 	"Water", 
-	"Cotton", 
-	"Rich ground", 
-	"Clay", 
-	"Forest", 
+	"Steam", 
+	"Bricks", 
+	"Wood", 
 	"Field",
-	"Brick", 
-	"Graveyard", 
-	"Well"
+	"Campfire", 
+	"Fishing_boat", 
+	"Grain_silo",
+	"Oven",
+	"Steamboat",
+	"Factory",
+	"Windmill",
+	"Large_boat",
+	"Port",
+	"Restaurant",
+	"Store",
 };
 
 const static Role initialRoles[MAX_CUBES] = { 
-	VILLAGE, 	HUD,
-	FIRE, 		WATER,
-	GROUND, 	LIFE,
-	WATER, 		EMPTY,
-	EMPTY, 		EMPTY,
-	EMPTY, 		EMPTY
+	VILLAGE, 	WATER,
+	GROUND, 	FIRE,
+	TOOLS, 		WATER,
+	GROUND, 	FIRE,
+	TOOLS, 		WATER,
+	GROUND, 	FIRE
 };
 
 class Roles {

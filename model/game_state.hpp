@@ -78,7 +78,7 @@ typedef struct gameState {
 		VILLAGE, 	HUD,
 		FIRE, 		WATER,
 		GROUND, 	LIFE,
-		WATER, 		EMPTY,
+		EMPTY, 		EMPTY,
 		EMPTY, 		EMPTY,
 		EMPTY, 		EMPTY
 	};

@@ -77,7 +77,7 @@ const static Role initialRoles[MAX_CUBES] = {
 	VILLAGE, 	HUD,
 	FIRE, 		WATER,
 	GROUND, 	LIFE,
-	WATER, 		EMPTY,
+	EMPTY, 		EMPTY,
 	EMPTY, 		EMPTY,
 	EMPTY, 		EMPTY
 };

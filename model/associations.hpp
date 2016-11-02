@@ -4,25 +4,32 @@
 #include "roles.hpp"
 
 const static Association assocs[] = {
-	Association(GROUND, WATER, RICH_GROUND, WATER),
-	Association(LIFE, FIRE, GROUND, FIRE),
-	Association(LIFE, WATER, COTTON, WATER),
-	Association(GROUND, FIRE, CLAY, FIRE),
-	Association(GROUND, GROUND, GRAVEYARD, GROUND),
 
-	Association(RICH_GROUND, LIFE, FIELD, LIFE),
-	Association(RICH_GROUND, RICH_GROUND, FOREST, RICH_GROUND),
-	Association(CLAY, FIRE, BRICK, FIRE),
-	Association(RICH_GROUND, FIRE, CLAY, FIRE),
+	Association(GROUND, WATER, WOOD, WATER),
+	Association(WATER, FIRE, STEAM, FIRE),
+	Association(TOOLS, FIRE, TOOLS, CAMPFIRE),
+	Association(TOOLS, WATER, FISHING_BOAT, WATER),
+	Association(GROUND, FIRE, BRICKS, FIRE),
+	Association(GROUND, TOOLS, FIELD, TOOLS),
 
-	Association(BRICK, WATER, GRAVEYARD, WATER),
-	Association(FIELD, FIRE, GROUND, FIRE),
-	Association(WATER, BRICK, WELL, BRICK),
-	Association(GRAVEYARD, LIFE, FIELD, LIFE)
+	Association(FIELD, CAMPFIRE, FOOD, CAMPFIRE),
+	Association(FIELD, WOOD, GRAIN_SILO, GROUND),
+	Association(CAMPFIRE, BRICKS, CAMPFIRE, OVEN),
+	Association(WOOD, FISHING_BOAT, GROUND, LARGE_BOAT),
+	Association(BRICKS, FIELD, WINDMILL, FIELD),
+	Association(STEAM, BRICKS, WATER, FACTORY),
+	Association(STEAM, FISHING_BOAT, FIRE, STEAMBOAT),
+
+	Association(FACTORY, LARGE_BOAT, PORT, LARGE_BOAT),
+	Association(WINDMILL, OVEN, GROUND, RESTAURANT),
+	Association(FOOD, GRAIN_SILO, GROUND, STORE)
+
+	//Association(WATER, BRICKS, GRAVEYARD, BRICK)
+
 };
 
 //Thank you to increase when adding an association
-#define ASSOCIATIONS_NUMBER 13
+#define ASSOCIATIONS_NUMBER 17
 
 class Associations {
 	public:

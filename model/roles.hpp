@@ -32,11 +32,12 @@
 #define FACTORY		16
 #define WINDMILL	17
 #define LARGE_BOAT	18
+#define FOOD		19
 
 //level 4 elements
-#define PORT		19
-#define RESTAURANT	20
-#define STORE		21
+#define PORT		20
+#define RESTAURANT	21
+#define STORE		22
 
 const static char *roles_names[] = {
 	"Village", 
@@ -58,6 +59,7 @@ const static char *roles_names[] = {
 	"Factory",
 	"Windmill",
 	"Large_boat",
+	"Food",
 	"Port",
 	"Restaurant",
 	"Store",

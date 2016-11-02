@@ -54,6 +54,8 @@ const static unsigned char needs[] = {
 	0,	// VILLAGE
 	0,	// HUD
 
+	0,  // **Empty block
+
 		// **primary elements
 	3,	// FIRE
 	3,	// GROUND
@@ -73,7 +75,7 @@ const static unsigned char needs[] = {
 	1	// WELL
 };
 
-const static Role initialRoles[MAX_CUBES] = { 
+const static Role initialRoles[] = { 
 	VILLAGE, 	HUD,
 	FIRE, 		WATER,
 	GROUND, 	LIFE,

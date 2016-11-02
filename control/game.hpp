@@ -5,6 +5,9 @@
 #include "../model/associations.hpp"
 #include "../view/text_renderer.hpp"
 
+#include "../model/item.hpp"
+#include "../model/items.hpp"
+
 using namespace Sifteo;
 
 class Game {

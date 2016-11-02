@@ -28,8 +28,7 @@ class VillageState {
 
 		bool removeNeed(Role role) {
 			unsigned roleIndex = needs.find(role);
-			for (int i=0; i<needs.count(); i++) 
-				LOG("%d %d %d\n", roleIndex, role, needs[i]);
+
 			if (roleIndex != needs.NOT_FOUND) {
 				needs.erase(roleIndex);
 				return true;
@@ -47,7 +46,6 @@ typedef struct gameState {
 	
 	Role cubeRoles[MAX_CUBES] = { 
 		VILLAGE, 	HUD,
-
 		GROUND, 	FIRE,
 		TOOLS, 		WATER,
 		GROUND, 	FIRE,

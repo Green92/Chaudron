@@ -19,7 +19,7 @@ class AbstractRenderer {
 		
 		virtual void renderElement(VideoBuffer *videoBuffer, const Role role);
 		virtual void renderHUD(VideoBuffer *videoBuffer, const unsigned char HUDIndex);
-		virtual void renderVillage(VideoBuffer *videoBuffer, const VillageState villageState);
+		virtual void renderVillage(VideoBuffer *videoBuffer, const VillageState &villageState);
 
 	public:
 		void registerCube(unsigned char cubeId) {

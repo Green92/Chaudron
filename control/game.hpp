@@ -11,6 +11,11 @@ class Game {
 
 	private:
 
+		int32_t nextNeed = 10000;
+		Sifteo::Random rng;
+
+		Sifteo::Array<Role, ROLE_NUMBER * 3, unsigned char> roles;
+
 		GameState gameState;
 
 		TextRenderer renderer;
@@ -35,14 +40,28 @@ class Game {
 	    {
 	        LOG("Neighbor add: %02x:%d - %02x:%d\n", firstID, firstSide, secondID, secondSide);
 
-	        const Association *assoc = Associations::search(gameState.cubeRoles[firstID], gameState.cubeRoles[secondID]);
+	        if (gameState.cubeRoles[firstID] != VILLAGE && gameState.cubeRoles[secondID] != VILLAGE) {
+	        	const Association *assoc = Associations::search(gameState.cubeRoles[firstID], gameState.cubeRoles[secondID]);
 
-	        if (assoc != NULL) {
-	        	gameState.cubeRoles[firstID] = assoc->getResult1();
-	        	gameState.cubeRoles[secondID] = assoc->getResult2();
-	        	
-	        	renderer.updateCube(firstID, &gameState);
-	        	renderer.updateCube(secondID, &gameState);
+		        if (assoc != NULL) {
+		        	if (assoc->getResult1() == gameState.cubeRoles[firstID] || assoc->getResult2() == gameState.cubeRoles[secondID]) {
+		        		gameState.cubeRoles[firstID] = assoc->getResult1();
+		        		gameState.cubeRoles[secondID] = assoc->getResult2();
+		        	} else {
+		        		gameState.cubeRoles[firstID] = assoc->getResult2();
+		        		gameState.cubeRoles[secondID] = assoc->getResult1();
+		        	}
+		        	
+		        	renderer.updateCube(firstID, &gameState);
+		        	renderer.updateCube(secondID, &gameState);
+		        }
+	        } else {
+	        	Role role = gameState.cubeRoles[firstID] == VILLAGE ? 
+	        		gameState.cubeRoles[secondID] : gameState.cubeRoles[firstID];
+
+	        	if (gameState.villageState.removeNeed(role)) {
+	        		renderer.updateCube(0, &gameState);
+	        	}
 	        }
 	    }
 
@@ -104,16 +123,37 @@ class Game {
 	        }
 	    }
 
+	    bool live(Sifteo::TimeDelta delta) {
+			nextNeed -= delta.milliseconds();
+			bool result = true;
+
+			if (nextNeed < 1) {
+				nextNeed = rng.randrange(NEXT_NEED_MIN * 1000, NEXT_NEED_MAX * 1000);
+				result = gameState.villageState.addNeed(roles[rng.randrange<unsigned int>(0, roles.count())]);
+				renderer.updateCube(0, &gameState);
+			}
+
+			return result;
+		}
+
 	public:
 		unsigned run() {
 			listenEvents();
 
 			System::setCubeRange(MIN_CUBES, MAX_CUBES);
 
+			for (Role i=VILLAGE; i<ROLE_NUMBER; i++) {
+				int chance = Roles::getNeed(i);
+
+				for (int j=0; j<chance; j++) {
+					roles.push_back(i);
+				}
+			}
+
 			// We're entirely event-driven. Everything is
 		    // updated by SensorListener's event callbacks.
 		    TimeStep ts;
-		    while (true)
+		    while (live(ts.delta()))
 		    {
 		        System::paint();
 		        ts.next();

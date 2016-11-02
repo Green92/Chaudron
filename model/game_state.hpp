@@ -8,8 +8,8 @@
 #include "../control/constants.hpp"
 
 //These values are in second
-#define NEXT_NEED_MIN 1
-#define NEXT_NEED_MAX 5
+#define NEXT_NEED_MIN 14
+#define NEXT_NEED_MAX 15
 
 class VillageState {
 
@@ -46,7 +46,8 @@ class VillageState {
 typedef struct gameState {
 	
 	Role cubeRoles[MAX_CUBES] = { 
-		VILLAGE, 	WATER,
+		VILLAGE, 	HUD,
+
 		GROUND, 	FIRE,
 		TOOLS, 		WATER,
 		GROUND, 	FIRE,

@@ -10,11 +10,11 @@ const static Association assocs[] = {
 	Association(TOOLS, FIRE, TOOLS, CAMPFIRE),
 	Association(TOOLS, WATER, FISHING_BOAT, WATER),
 	Association(GROUND, FIRE, BRICKS, FIRE),
-	Association(GROUND, TOOLS, FIELD, TOOLS),
+	Association(GROUND, TOOLS, GROUND, FIELD),
 
 	Association(FIELD, CAMPFIRE, FOOD, CAMPFIRE),
 	Association(FIELD, WOOD, GRAIN_SILO, GROUND),
-	Association(CAMPFIRE, BRICKS, CAMPFIRE, OVEN),
+	Association(CAMPFIRE, BRICKS, OVEN, BRICKS),
 	Association(WOOD, FISHING_BOAT, GROUND, LARGE_BOAT),
 	Association(BRICKS, FIELD, WINDMILL, FIELD),
 	Association(STEAM, BRICKS, WATER, FACTORY),

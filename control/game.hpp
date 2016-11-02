@@ -14,7 +14,7 @@ class Game {
 		int32_t nextNeed = 10000;
 		Sifteo::Random rng;
 
-		Sifteo::Array<Role, ROLE_NUMBER * 3, unsigned char> roles;
+		Sifteo::Array<Role, ROLE_NUMBER * 4, unsigned char> roles;
 
 		GameState gameState;
 
@@ -138,6 +138,9 @@ class Game {
 
 	public:
 		unsigned run() {
+
+			rng.seed();
+
 			listenEvents();
 
 			System::setCubeRange(MIN_CUBES, MAX_CUBES);

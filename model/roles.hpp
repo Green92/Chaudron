@@ -39,7 +39,7 @@
 #define RESTAURANT	21
 #define STORE		22
 
-#define ROLE_NUMBER 15
+#define ROLE_NUMBER 23
 
 const static char *roles_names[] = {
 	"Village", 
@@ -54,13 +54,13 @@ const static char *roles_names[] = {
 	"Wood", 
 	"Field",
 	"Campfire", 
-	"Fishing_boat", 
-	"Grain_silo",
+	"Fishing boat", 
+	"Grain silo",
 	"Oven",
 	"Steamboat",
 	"Factory",
 	"Windmill",
-	"Large_boat",
+	"Large boat",
 	"Food",
 	"Port",
 	"Restaurant",
@@ -68,7 +68,7 @@ const static char *roles_names[] = {
 };
 
 const static Role initialRoles[MAX_CUBES] = { 
-	VILLAGE, 	WATER,
+	VILLAGE, 	HUD,
 	GROUND, 	FIRE,
 	TOOLS, 		WATER,
 	GROUND, 	FIRE,
@@ -78,28 +78,41 @@ const static Role initialRoles[MAX_CUBES] = {
 
 const static unsigned char needs[] = {
 		// **Special blocks
-	0,	// VILLAGE
-	0,	// HUD
+	//Special blocks
+0, //VILLAGE	0
+0, //HUD		0
 
-	0,  // **Empty block
+//Empty block
+0, //EMPTY 	2
 
-		// **primary elements
-	3,	// FIRE
-	3,	// GROUND
-	3,	// LIFE
-	3,	// WATER
+//primary elements
+4, // FIRE	3
+4,// GROUND 	4
+4,// TOOLS	5
+4,// WATER	6
 
-		// **secondary elements
-	2,	// COTTON
-	2,	// RICH_GROUND
-	2,	// CLAY
+//secondary elements
+3, // STEAM		 7
+3,// BRICKS  	 8
+3, // WOOD		 9
+3, // FIELD		 10
+3, // CAMPFIRE     11
+3, // FISHING_BOAT 12
 
-		// **tertiary elements
-	1,	// FOREST
-	1,	// FIELD
-	1,	// BRICK
-	1,	// GRAVEYARD
-	1	// WELL
+//tertiary elements
+2, // GRAIN_SILO	13
+2, // OVEN		14
+2, // STEAMBOAT	15
+2, // FACTORY		16
+2, // WINDMILL	17
+2, // LARGE_BOAT	18
+2, // FOOD		19
+
+//level 4 elements
+1, // PORT		20
+1, // RESTAURANT	21
+1, // STORE		22
+
 };
 
 class Roles {

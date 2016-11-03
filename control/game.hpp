@@ -13,17 +13,33 @@ using namespace Sifteo;
 class Game {
 
 	private:
-
 		int32_t nextNeed = 10000;
 		Sifteo::Random rng;
-
 		Sifteo::Array<Role, ROLE_NUMBER * 4, unsigned char> roles;
-
 		GameState gameState;
-
 		TextRenderer renderer;
-
 		TiltShakeRecognizer motion[MAX_CUBES];
+
+		void checkAssoc(unsigned firstID, unsigned secondID) {
+			const Association *assoc = Associations::search(gameState.cubeRoles[firstID], gameState.cubeRoles[secondID]);
+
+	        if (assoc != NULL) {
+    			gameState.cubeRoles[firstID] = assoc->getResult1();
+    			gameState.cubeRoles[secondID] = assoc->getResult2();
+
+	        	renderer.updateCube(firstID, &gameState);
+	        	renderer.updateCube(secondID, &gameState);
+	        }
+		}
+
+		void checkNeed(unsigned firstID, unsigned secondID) {
+			Role role = gameState.cubeRoles[firstID] == VILLAGE ? 
+        	gameState.cubeRoles[secondID] : gameState.cubeRoles[firstID];
+
+        	if (gameState.villageState.removeNeed(role)) {
+        		renderer.updateCube(0, &gameState);
+        	}
+		}
 
 		void onConnect(unsigned id) {
 			LOG("Cube connected: %d\n", id);
@@ -44,22 +60,9 @@ class Game {
 	        LOG("Neighbor add: %02x:%d - %02x:%d\n", firstID, firstSide, secondID, secondSide);
 
 	        if (gameState.cubeRoles[firstID] != VILLAGE && gameState.cubeRoles[secondID] != VILLAGE) {
-	        	const Association *assoc = Associations::search(gameState.cubeRoles[firstID], gameState.cubeRoles[secondID]);
-
-		        if (assoc != NULL) {
-        			gameState.cubeRoles[firstID] = assoc->getResult1();
-        			gameState.cubeRoles[secondID] = assoc->getResult2();
-
-		        	renderer.updateCube(firstID, &gameState);
-		        	renderer.updateCube(secondID, &gameState);
-		        }
+	        	checkAssoc(firstID, secondID);
 	        } else {
-	        	Role role = gameState.cubeRoles[firstID] == VILLAGE ? 
-	        		gameState.cubeRoles[secondID] : gameState.cubeRoles[firstID];
-
-	        	if (gameState.villageState.removeNeed(role)) {
-	        		renderer.updateCube(0, &gameState);
-	        	}
+	        	checkNeed(firstID, secondID);
 	        }
 	    }
 
@@ -135,14 +138,7 @@ class Game {
 		}
 
 	public:
-		unsigned run() {
-
-			rng.seed();
-
-			listenEvents();
-
-			System::setCubeRange(MIN_CUBES, MAX_CUBES);
-
+		Game() {
 			for (Role i=VILLAGE; i<ROLE_NUMBER; i++) {
 				int chance = Roles::getNeed(i);
 
@@ -150,7 +146,12 @@ class Game {
 					roles.push_back(i);
 				}
 			}
+		}
 
+		unsigned run() {
+			listenEvents();
+
+			System::setCubeRange(MIN_CUBES, MAX_CUBES);
 			// We're entirely event-driven. Everything is
 		    // updated by SensorListener's event callbacks.
 		    TimeStep ts;

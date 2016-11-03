@@ -47,14 +47,9 @@ class Game {
 	        	const Association *assoc = Associations::search(gameState.cubeRoles[firstID], gameState.cubeRoles[secondID]);
 
 		        if (assoc != NULL) {
-		        	if (assoc->getResult1() == gameState.cubeRoles[firstID] || assoc->getResult2() == gameState.cubeRoles[secondID]) {
-		        		gameState.cubeRoles[firstID] = assoc->getResult1();
-		        		gameState.cubeRoles[secondID] = assoc->getResult2();
-		        	} else {
-		        		gameState.cubeRoles[firstID] = assoc->getResult2();
-		        		gameState.cubeRoles[secondID] = assoc->getResult1();
-		        	}
-		        	
+        			gameState.cubeRoles[firstID] = assoc->getResult1();
+        			gameState.cubeRoles[secondID] = assoc->getResult2();
+
 		        	renderer.updateCube(firstID, &gameState);
 		        	renderer.updateCube(secondID, &gameState);
 		        }

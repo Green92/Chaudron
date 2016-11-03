@@ -8,17 +8,18 @@
 #include "../model/item.hpp"
 #include "../model/items.hpp"
 
+#include "level.hpp"
+
 using namespace Sifteo;
 
 class Game {
 
 	private:
-		int32_t nextNeed = 10000;
-		Sifteo::Random rng;
-		Sifteo::Array<Role, ROLE_NUMBER * 4, unsigned char> roles;
+
 		GameState gameState;
-		TextRenderer renderer;
+		TextRenderer renderer = TextRenderer(&gameState);
 		TiltShakeRecognizer motion[MAX_CUBES];
+		Level level = Level(&gameState, &renderer);
 
 		void checkAssoc(unsigned firstID, unsigned secondID) {
 			const Association *assoc = Associations::search(gameState.cubeRoles[firstID], gameState.cubeRoles[secondID]);
@@ -27,8 +28,8 @@ class Game {
     			gameState.cubeRoles[firstID] = assoc->getResult1();
     			gameState.cubeRoles[secondID] = assoc->getResult2();
 
-	        	renderer.updateCube(firstID, &gameState);
-	        	renderer.updateCube(secondID, &gameState);
+	        	renderer.updateCube(firstID);
+	        	renderer.updateCube(secondID);
 	        }
 		}
 
@@ -37,7 +38,7 @@ class Game {
         	gameState.cubeRoles[secondID] : gameState.cubeRoles[firstID];
 
         	if (gameState.villageState.removeNeed(role)) {
-        		renderer.updateCube(0, &gameState);
+        		renderer.updateCube(0);
         	}
 		}
 
@@ -45,7 +46,7 @@ class Game {
 			LOG("Cube connected: %d\n", id);
 
 			renderer.registerCube(id);
-			renderer.updateCube(id, &gameState);
+			renderer.updateCube(id);
 
 			motion[id].attach(id);
 		}
@@ -96,7 +97,7 @@ class Game {
 	        	switch (gameState.cubeRoles[id]) {
 	        		case HUD:
 	        			gameState.HUDIndex = (gameState.HUDIndex + 1) % ASSOCIATIONS_NUMBER;
-	        			renderer.updateCube(id, &gameState);
+	        			renderer.updateCube(id);
 	        		break;
 
 	        		case VILLAGE:
@@ -104,7 +105,7 @@ class Game {
 
 	        		default:
 	        			gameState.cubeRoles[id] = Roles::getInitialRole(id);
-	        			renderer.updateCube(id, &gameState);
+	        			renderer.updateCube(id);
 	        		break;
 	        	}
 	        }
@@ -124,29 +125,7 @@ class Game {
 	        }
 	    }
 
-	    bool live(Sifteo::TimeDelta delta) {
-			nextNeed -= delta.milliseconds();
-			bool result = true;
-
-			if (nextNeed < 1) {
-				nextNeed = rng.randrange(NEXT_NEED_MIN * 1000, NEXT_NEED_MAX * 1000);
-				result = gameState.villageState.addNeed(roles[rng.randrange<unsigned int>(0, roles.count())]);
-				renderer.updateCube(0, &gameState);
-			}
-
-			return result;
-		}
-
 	public:
-		Game() {
-			for (Role i=VILLAGE; i<ROLE_NUMBER; i++) {
-				int chance = Roles::getNeed(i);
-
-				for (int j=0; j<chance; j++) {
-					roles.push_back(i);
-				}
-			}
-		}
 
 		unsigned run() {
 			listenEvents();
@@ -155,7 +134,7 @@ class Game {
 			// We're entirely event-driven. Everything is
 		    // updated by SensorListener's event callbacks.
 		    TimeStep ts;
-		    while (live(ts.delta()))
+		    while (level.live(ts.delta()))
 		    {
 		        System::paint();
 		        ts.next();

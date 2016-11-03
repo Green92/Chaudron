@@ -43,6 +43,12 @@ class TextRenderer : public AbstractRenderer {
 				videoBuffer->bg0rom.text(vec(1, 2+i), Roles::getRoleName(villageState.getNeeds()[i]));
 			}
 		}
+
+	public:
+		TextRenderer(const GameState *gameState) 
+			:AbstractRenderer(gameState) {
+				
+		}
 };
 
 #endif

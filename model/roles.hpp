@@ -5,75 +5,83 @@
 #include "association.hpp"
 
 //Special blocks
-#define VILLAGE	0
-#define HUD		1
-
-//Empty block
-#define EMPTY 	2
+#define CAULDRON	0
+#define HUD			1
+#define DEBUG_PLUS 	2
+#define DEBUG_MINUS 3
 
 //primary elements
-#define FIRE	3
-#define GROUND 	4
-#define TOOLS	5
-#define WATER	6
+#define EYES		4
+#define INSECTS		5
+#define MANDRAGORA 	6
+#define MUSHROOMS 	7
 
 //secondary elements
-#define STEAM		 7
-#define BRICKS  	 8
-#define WOOD		 9
-#define FIELD		 10
-#define CAMPFIRE     11
-#define FISHING_BOAT 12
+#define EYE_SMOOTHIE 			8
+#define PRANCING_EYE 			9
+#define POISON_PASTE 			10
+#define INSECT_TOBACCO			11
+#define HALLUCINOGENIC_INFUSION	12
+#define BLINDING_POTION			13
 
-//tertiary elements
-#define GRAIN_SILO	13
-#define OVEN		14
-#define STEAMBOAT	15
-#define FACTORY		16
-#define WINDMILL	17
-#define LARGE_BOAT	18
-#define FOOD		19
+//level 3 final elements
+#define EYE_PORRIDGE		14
+#define OCULAR_SHEEP		15
+#define SLIME				16
+#define POISON_CAKE			17
+#define PROPHETIC_POWDER	18
+#define SLUMBER_POTION		19
 
-//level 4 elements
-#define PORT		20
-#define RESTAURANT	21
-#define STORE		22
+//level 4 final elements
+#define LAST_BREAKFAST		20
+#define ENRAGED_EYE			21
+#define MINIATURE_ORACLE	22
+#define CANCER_COOKIE 		23
+#define BLINDING_TOBACCO	24
+#define TRUTH_COCKTAIL		25
+#define EYE_DROPS			26
 
-#define ROLE_NUMBER 15
+#define ROLE_NUMBER 27
 
 const static char *roles_names[] = {
-	"Village", 
-	"HUD", 
-	"Empty", 
-	"Fire", 
-	"Ground", 
-	"Tools", 
-	"Water", 
-	"Steam", 
-	"Bricks", 
-	"Wood", 
-	"Field",
-	"Campfire", 
-	"Fishing_boat", 
-	"Grain_silo",
-	"Oven",
-	"Steamboat",
-	"Factory",
-	"Windmill",
-	"Large_boat",
-	"Food",
-	"Port",
-	"Restaurant",
-	"Store",
+	 "Chaudron",
+	 "HUD",
+	 "DEBUG_PLUS",
+	 "DEBUG_MINUS",
+	 "Yeux",
+	 "Insectes",
+	 "Mandragore",
+	 "Champignons",
+	 "Smoothie de Vision",
+	 "Oeil Sauteur",
+	 "Pate empoisonnee",
+	 "Tabac d'Insectes",
+	 "Infusion Hallucinogene",
+	 "Potion d'Aveuglement",
+	 "Porridge aux Yeux",
+	 "Mouton Oculaire",
+	 "Slime",
+	 "Gateau Empoisonne",
+	 "Poudre Prophétique",
+	 "Potion de Sommeil",
+	 "Dernier P'tit Dej",
+	 "Oeil Enrage",
+	 "Oracle Miniature",
+	 "Cookie au Cancer",
+	 "Tabac Aveuglant",
+	 "Cocktail de la Verité",
+	 "Gouttes pour les yeux"
+
 };
 
 const static Role initialRoles[MAX_CUBES] = { 
-	VILLAGE, 	WATER,
-	GROUND, 	FIRE,
-	TOOLS, 		WATER,
-	GROUND, 	FIRE,
-	TOOLS, 		WATER,
-	GROUND, 	FIRE
+	CAULDRON, 	DEBUG_MINUS,
+	DEBUG_PLUS, MANDRAGORA,
+	INSECTS, 	EYES,
+	MUSHROOMS, 	MANDRAGORA,
+	INSECTS, 	EYES,
+	MUSHROOMS, 	MANDRAGORA,
+	
 };
 
 const static unsigned char needs[] = {
@@ -81,25 +89,40 @@ const static unsigned char needs[] = {
 	0,	// VILLAGE
 	0,	// HUD
 
-	0,  // **Empty block
+	0,  // DEBUG_PLUS
+	0,  // DEBUG_MINUS
 
 		// **primary elements
-	3,	// FIRE
-	3,	// GROUND
-	3,	// LIFE
-	3,	// WATER
+	2,	// EYES
+	2,	// INSECTS
+	2,	// MANDRAGORA
+	2,	// MUSHROOMS
 
-		// **secondary elements
-	2,	// COTTON
-	2,	// RICH_GROUND
-	2,	// CLAY
+		// **one association elements
+	2,	// EYE_SMOOTHIE
+	2,	// PRANCING_EYE
+	2,	// POISON_PASTE
+	2,	// INSECT_TOBACCO
+	2,	// HALLUCINOGENIC_INFUSION
+	2,	// BLINDING_POTION
 
-		// **tertiary elements
-	1,	// FOREST
-	1,	// FIELD
-	1,	// BRICK
-	1,	// GRAVEYARD
-	1	// WELL
+		// **two associations elements
+	2,	// EYE_PORRIDGE
+	2,	// OCULAR_SHEEP
+	2,	// SLIME
+	2,	// POISON_CAKE
+	2,	// ORACLE_POWDER
+	2,	// SLUMBER_POTION
+
+		// **three associations elements
+	2,	//LAST_BREAKFAST
+	2,	//ENRAGED_EYE
+	2,	//MINIATURE_ORACLE
+	2,	//CANCER_COOKIE
+	2,	//BLINDING_TOBACCO
+	2,	//TRUTH_COCKTAIL
+	2,	//EYE_DROPS
+
 };
 
 class Roles {
@@ -109,7 +132,7 @@ class Roles {
 		}
 
 		inline static bool isPrimaryElement(Role role) {
-			return role >= FIRE && role <= WATER;
+			return role >= EYES && role <= MUSHROOMS;
 		}
 
 		inline static Role getInitialRole(unsigned id) {

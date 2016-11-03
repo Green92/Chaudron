@@ -40,7 +40,7 @@ class Game {
 	    {
 	        LOG("Neighbor add: %02x:%d - %02x:%d\n", firstID, firstSide, secondID, secondSide);
 
-	        if (gameState.cubeRoles[firstID] != VILLAGE && gameState.cubeRoles[secondID] != VILLAGE) {
+	        if (gameState.cubeRoles[firstID] != CAULDRON && gameState.cubeRoles[secondID] != CAULDRON) {
 	        	const Association *assoc = Associations::search(gameState.cubeRoles[firstID], gameState.cubeRoles[secondID]);
 
 		        if (assoc != NULL) {
@@ -56,7 +56,7 @@ class Game {
 		        	renderer.updateCube(secondID, &gameState);
 		        }
 	        } else {
-	        	Role role = gameState.cubeRoles[firstID] == VILLAGE ? 
+	        	Role role = gameState.cubeRoles[firstID] == CAULDRON ? 
 	        		gameState.cubeRoles[secondID] : gameState.cubeRoles[firstID];
 
 	        	if (gameState.villageState.removeNeed(role)) {
@@ -98,7 +98,7 @@ class Game {
 	        			renderer.updateCube(id, &gameState);
 	        		break;
 
-	        		case VILLAGE:
+	        		case CAULDRON:
 	        		break;
 
 	        		default:
@@ -142,7 +142,7 @@ class Game {
 
 			System::setCubeRange(MIN_CUBES, MAX_CUBES);
 
-			for (Role i=VILLAGE; i<ROLE_NUMBER; i++) {
+			for (Role i=CAULDRON; i<ROLE_NUMBER; i++) {
 				int chance = Roles::getNeed(i);
 
 				for (int j=0; j<chance; j++) {

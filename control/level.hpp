@@ -12,13 +12,13 @@ class Level {
 		GameState *gameState;
 		AbstractRenderer *renderer;
 		Random rng;
-		Sifteo::Array<Role, ROLE_NUMBER * 4, unsigned char> roles;
+		Sifteo::Array<Role, ROLE_NUMBER * 2, unsigned char> roles;
 		unsigned nextNeed;
 		unsigned needInterval;
 		unsigned maxLevel;
 
 		virtual void initRoles() {
-			for (Role i=VILLAGE; i<ROLE_NUMBER; i++) {
+			for (Role i=CAULDRON; i<ROLE_NUMBER; i++) {
 				int chance = Roles::getNeed(i);
 				
 				if (chance >= maxLevel)  {
@@ -34,9 +34,9 @@ class Level {
 			this->gameState = gameState;
 			this->renderer = renderer;
 			rng.seed();
-			needInterval = 1;
+			needInterval = 5;
 			nextNeed = needInterval * MILLIS_IN_A_SECOND;
-			maxLevel = 4;
+			maxLevel = 2;
 			initRoles();
 		}
 

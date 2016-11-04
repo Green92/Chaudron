@@ -20,10 +20,9 @@ using namespace Sifteo;
 /**
  * ?? (definit des meta donnees)
  */
-static Metadata M = Metadata()
-    .title("Proto")
-    .package("com.ican.gd.proto", "0.1")
-    .icon(Icon)
+ static Metadata M = Metadata()
+    .title("System Launcher")
+    .package("com.sifteo.launcher", "1")
     .cubeRange(0, CUBE_ALLOCATION);
 
  void main() {

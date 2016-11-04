@@ -34,7 +34,7 @@ class Game {
 		}
 
 		void checkNeed(unsigned firstID, unsigned secondID) {
-			Role role = gameState.cubeRoles[firstID] == VILLAGE ? 
+			Role role = gameState.cubeRoles[firstID] == CAULDRON ? 
         	gameState.cubeRoles[secondID] : gameState.cubeRoles[firstID];
 
         	if (gameState.villageState.removeNeed(role)) {
@@ -60,7 +60,7 @@ class Game {
 	    {
 	        LOG("Neighbor add: %02x:%d - %02x:%d\n", firstID, firstSide, secondID, secondSide);
 
-	        if (gameState.cubeRoles[firstID] != VILLAGE && gameState.cubeRoles[secondID] != VILLAGE) {
+	        if (gameState.cubeRoles[firstID] != CAULDRON && gameState.cubeRoles[secondID] != CAULDRON) {
 	        	checkAssoc(firstID, secondID);
 	        } else {
 	        	checkNeed(firstID, secondID);
@@ -100,7 +100,19 @@ class Game {
 	        			renderer.updateCube(id);
 	        		break;
 
-	        		case VILLAGE:
+	        		case CAULDRON:
+	        		break;
+
+	        		case DEBUG_MINUS:
+	        			if (level.needInt() > 2) {
+	        				level.needInt()--;
+	        			}
+	        		break;
+
+	        		case DEBUG_PLUS:
+	        			if (level.needInt() < 30)  {
+	        				 level.needInt()++;
+	        			}
 	        		break;
 
 	        		default:
@@ -131,6 +143,7 @@ class Game {
 			listenEvents();
 
 			System::setCubeRange(MIN_CUBES, MAX_CUBES);
+
 			// We're entirely event-driven. Everything is
 		    // updated by SensorListener's event callbacks.
 		    TimeStep ts;

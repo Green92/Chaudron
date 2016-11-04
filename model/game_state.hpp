@@ -45,12 +45,12 @@ class VillageState {
 typedef struct gameState {
 	
 	Role cubeRoles[MAX_CUBES] = { 
-		VILLAGE, 	HUD,
-		GROUND, 	FIRE,
-		TOOLS, 		WATER,
-		GROUND, 	FIRE,
-		TOOLS, 		WATER,
-		GROUND, 	FIRE
+		CAULDRON, 	DEBUG_MINUS,
+		DEBUG_PLUS, MANDRAGORA,
+		INSECTS, 	EYES,
+		MUSHROOMS, 	MANDRAGORA,
+		INSECTS, 	EYES,
+		MUSHROOMS, 	MANDRAGORA
 	};
 
 	unsigned char HUDIndex = 0;

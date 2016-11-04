@@ -43,7 +43,7 @@ class AbstractRenderer {
 					renderElement(vBuf, gameState->cubeRoles[cubeId]);
 				break;
 
-				case VILLAGE:
+				case CAULDRON:
 					renderVillage(vBuf, gameState->villageState);
 				break;
 

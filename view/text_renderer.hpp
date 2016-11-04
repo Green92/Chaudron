@@ -40,7 +40,7 @@ class TextRenderer : public AbstractRenderer {
 			videoBuffer->bg0rom.text(vec(1, 1), "Village");
 
 			for (int i=0; i<villageState.getNeeds().count(); i++) {
-				videoBuffer->bg0rom.text(vec(1, 2+i), Roles::getRoleName(villageState.getNeeds()[i]));
+				videoBuffer->bg0rom.text(vec(1, 2+(i*2)), Roles::getRoleName(villageState.getNeeds()[i]));
 			}
 		}
 

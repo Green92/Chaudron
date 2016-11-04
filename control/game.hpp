@@ -137,6 +137,7 @@ class Game {
 		}
 
 	public:
+
 		unsigned run() {
 			listenEvents();
 

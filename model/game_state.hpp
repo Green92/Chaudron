@@ -41,6 +41,7 @@ class VillageState {
 		const Sifteo::Array<Role, MAX_NEEDS, unsigned char> &getNeeds() const {
 			return needs;
 		}
+
 };
 
 typedef struct gameState {

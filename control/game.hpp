@@ -8,6 +8,8 @@
 #include "../model/item.hpp"
 #include "../model/items.hpp"
 
+#include "../model/request.hpp"
+
 #include "level.hpp"
 
 using namespace Sifteo;

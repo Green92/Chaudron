@@ -2,7 +2,6 @@
 #define ROLES_HPP
 
 #include "role.hpp"
-#include "association.hpp"
 
 //Special blocks
 #define CAULDRON	0
@@ -80,8 +79,7 @@ const static Role initialRoles[MAX_CUBES] = {
 	INSECTS, 	EYES,
 	MUSHROOMS, 	MANDRAGORA,
 	INSECTS, 	EYES,
-	MUSHROOMS, 	MANDRAGORA,
-	
+	MUSHROOMS, 	MANDRAGORA
 };
 
 const static unsigned char needs[] = {
@@ -121,8 +119,7 @@ const static unsigned char needs[] = {
 	2,	//CANCER_COOKIE
 	2,	//BLINDING_TOBACCO
 	2,	//TRUTH_COCKTAIL
-	2,	//EYE_DROPS
-
+	2	//EYE_DROPS
 };
 
 class Roles {

@@ -106,9 +106,20 @@ class TextRenderer : public AbstractRenderer {
 			videoBuffer->bg0rom.erase();
 			videoBuffer->bg0rom.text(vec(1, 1), "Village");
 
+			String<6> str;
+			str << villageState.nextNeed;
+
+			videoBuffer->bg0rom.text(vec(10, 1), str);
+
 			for (int i=0; i<villageState.getNeeds().count(); i++) {
-				videoBuffer->bg0rom.text(vec(1, 2+i), Roles::getRoleName(villageState.getNeeds()[i]));
+				videoBuffer->bg0rom.text(vec(1, 2+(i*2)), Roles::getRoleName(villageState.getNeeds()[i]));
 			}
+		}
+
+	public:
+		TextRenderer(const GameState *gameState) 
+			:AbstractRenderer(gameState) {
+				
 		}
 };
 

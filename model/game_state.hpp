@@ -8,8 +8,8 @@
 #include "../control/constants.hpp"
 
 //These values are in second
-#define NEXT_NEED_MIN 1
-#define NEXT_NEED_MAX 5
+#define NEXT_NEED_MIN 14
+#define NEXT_NEED_MAX 15
 
 class VillageState {
 
@@ -17,6 +17,7 @@ class VillageState {
 		Sifteo::Array<Role, MAX_NEEDS, unsigned char> needs;
 
 	public:
+		int nextNeed;
 		bool addNeed(Role role) {
 			if (needs.count() == MAX_NEEDS) {
 				return false;
@@ -28,8 +29,7 @@ class VillageState {
 
 		bool removeNeed(Role role) {
 			unsigned roleIndex = needs.find(role);
-			for (int i=0; i<needs.count(); i++) 
-				LOG("%d %d %d\n", roleIndex, role, needs[i]);
+
 			if (roleIndex != needs.NOT_FOUND) {
 				needs.erase(roleIndex);
 				return true;
@@ -47,12 +47,12 @@ class VillageState {
 typedef struct gameState {
 	
 	Role cubeRoles[MAX_CUBES] = { 
-	CAULDRON, 	DEBUG_MINUS,
-	DEBUG_PLUS, MANDRAGORA,
-	INSECTS, 	EYES,
-	MUSHROOMS, 	MANDRAGORA,
-	INSECTS, 	EYES,
-	MUSHROOMS, 	MANDRAGORA,
+		CAULDRON, 	DEBUG_MINUS,
+		DEBUG_PLUS, MANDRAGORA,
+		INSECTS, 	EYES,
+		MUSHROOMS, 	MANDRAGORA,
+		INSECTS, 	EYES,
+		MUSHROOMS, 	MANDRAGORA
 	};
 
 	unsigned char HUDIndex = 0;

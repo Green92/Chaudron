@@ -15,6 +15,8 @@ class AbstractRenderer {
 		}
 
 	protected:
+		const GameState *gameState;
+
 		virtual Sifteo::VideoMode getVideoMode() const;
 		
 		virtual void renderElement(VideoBuffer *videoBuffer, const Role role);
@@ -22,13 +24,17 @@ class AbstractRenderer {
 		virtual void renderVillage(VideoBuffer *videoBuffer, const VillageState &villageState);
 
 	public:
+		AbstractRenderer(const GameState *gameState) {
+			this->gameState = gameState;
+		}
+
 		void registerCube(unsigned char cubeId) {
 			m_vbufs[cubeId].initMode(getVideoMode());
 			m_vbufs[cubeId].attach(cubeId);
 			nbCubes++;
 		}
 
-		void updateCube(unsigned char cubeId, const GameState *gameState) {
+		void updateCube(unsigned char cubeId) {
 			
 			VideoBuffer *vBuf = getVideoBuffer(cubeId);
 
@@ -47,9 +53,9 @@ class AbstractRenderer {
 			}
 		}
 
-		void updateAll(const GameState *gameState) {
+		void updateAll() {
 			for (unsigned char i = 0; i < nbCubes; i++) {
-				updateCube(i, gameState);
+				updateCube(i);
 			}
 		}
 };

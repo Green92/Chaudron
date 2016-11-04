@@ -1,43 +1,54 @@
 #ifndef ASSOCIATION_HPP
 #define ASSOCIATION_HPP
 
-#include "role.hpp"
+template <typename T>
+	class Association_templ {
+		private:
+			T m_item1;
+			T m_item2;
+			T m_result1;
+			T m_result2;
+			bool flag = false;
 
-class Association {
-	private:
-		Role m_item1;
-		Role m_item2;
-		Role m_result1;
-		Role m_result2;
+		public:
+			Association_templ(T item1, T item2, T result1, T result2) {
+				m_item1 = item1;
+				m_item2 = item2;
+				m_result1 = result1;
+				m_result2 = result2;
+			}
 
-	public:
-		Association(Role item1, Role item2, Role result1, Role result2) {
-			m_item1 = item1;
-			m_item2 = item2;
-			m_result1 = result1;
-			m_result2 = result2;
-		}
+			inline bool isSame(T item1, T item2) {
+				if (m_item1 == item1 && m_item2 == item2) {
+					flag = true;
+					return true;
+				}
 
-		inline bool isSame(Role item1, Role item2) const {
-			return (m_item1 == item1 && m_item2 == item2)
-				|| (m_item1 == item2 && m_item2 == item1);
-		}
+				if (m_item1 == item2 && m_item2 == item1) {
+					flag = false;
+					return true;
+				}
 
-		inline Role getItem1() const {
-			return m_item1;
-		}
+				return false;
+			}
 
-		inline Role getItem2() const {
-			return m_item2;
-		}
+			inline T getItem1() const {
+				return m_item1;
+			}
 
-		inline Role getResult1() const {
-			return m_result1;
-		}
+			inline T getItem2() const {
+				return m_item2;
+			}
 
-		inline Role getResult2() const {
-			return m_result2;
-		}
-};
+			inline T getResult1() const {
+				return flag ? m_result1 : m_result2;
+			}
+
+			inline T getResult2() const {
+				return flag ? m_result2 : m_result1;
+			}
+	};
+
+typedef Association_templ<Role> Association;
 
 #endif

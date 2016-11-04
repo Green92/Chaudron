@@ -20,11 +20,11 @@ using namespace Sifteo;
 /**
  * ?? (definit des meta donnees)
  */
-static Metadata M = Metadata()
-    .title("Proto")
-    .package("com.ican.gd.proto", "0.1")
-    .icon(Icon)
-    .cubeRange(0, CUBE_ALLOCATION);
+ static Metadata M = Metadata()
+    .title("Usine bunker")
+    .package("com.ican.proto", "1")
+    .cubeRange(0, CUBE_ALLOCATION)
+    .icon(Icon);
 
  void main() {
 

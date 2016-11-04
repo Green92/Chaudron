@@ -106,12 +106,14 @@ class Game {
 	        		case DEBUG_MINUS:
 	        			if (level.needInt() > 2) {
 	        				level.needInt()--;
+	        				gameState.villageState.nextNeed = level.needInt() * 1000;
 	        			}
 	        		break;
 
 	        		case DEBUG_PLUS:
 	        			if (level.needInt() < 30)  {
 	        				 level.needInt()++;
+	        				 gameState.villageState.nextNeed = level.needInt() * 1000;
 	        			}
 	        		break;
 

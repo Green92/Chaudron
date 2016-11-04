@@ -17,6 +17,7 @@ class VillageState {
 		Sifteo::Array<Role, MAX_NEEDS, unsigned char> needs;
 
 	public:
+		int nextNeed;
 		bool addNeed(Role role) {
 			if (needs.count() == MAX_NEEDS) {
 				return false;

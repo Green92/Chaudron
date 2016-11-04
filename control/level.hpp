@@ -13,7 +13,6 @@ class Level {
 		AbstractRenderer *renderer;
 		Random rng;
 		Sifteo::Array<Role, ROLE_NUMBER * 2, unsigned char> roles;
-		unsigned nextNeed;
 		unsigned needInterval;
 		unsigned maxLevel;
 
@@ -30,12 +29,12 @@ class Level {
 		}
 	
 	public:
-		Level(GameState *gameState, AbstractRenderer *renderer) {
+		Level(GameState *gameState, TextRenderer *renderer) {
 			this->gameState = gameState;
 			this->renderer = renderer;
 			rng.seed();
 			needInterval = 5;
-			nextNeed = needInterval * MILLIS_IN_A_SECOND;
+			gameState->villageState.nextNeed = needInterval * MILLIS_IN_A_SECOND;
 			maxLevel = 2;
 			initRoles();
 		}
@@ -49,14 +48,15 @@ class Level {
 		}
 
 		virtual bool live(Sifteo::TimeDelta delta) {
-			nextNeed -= delta.milliseconds();
+			gameState->villageState.nextNeed -= delta.milliseconds();
 			bool result = true;
 
-			if (nextNeed < 1) {
-				nextNeed = needInterval * MILLIS_IN_A_SECOND;
+			if (gameState->villageState.nextNeed < 1) {
+				gameState->villageState.nextNeed = needInterval * MILLIS_IN_A_SECOND;
 				result = gameState->villageState.addNeed(roles[rng.randrange<unsigned int>(0, roles.count())]);
-				renderer->updateCube(0);
 			}
+
+			renderer->updateCube(0);
 
 			return result;
 		}

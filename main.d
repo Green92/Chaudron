@@ -41,7 +41,9 @@ main.o: main.cpp \
   control/../model/associations.hpp control/../model/roles.hpp \
   control/../model/association.hpp control/../view/text_renderer.hpp \
   control/../view/abstract_renderer.hpp \
-  control/../view/../model/game_state.hpp
+  control/../view/../model/game_state.hpp control/../model/item.hpp \
+  control/../model/items.hpp control/../model/request.hpp \
+  control/../model/outcome.hpp control/level.hpp
 
 D:\Work\Sifteo\sifteo-sdk-windows-v1.0.0-71-g0792e5f\/include\sifteo.h:
 
@@ -138,3 +140,13 @@ control/../view/text_renderer.hpp:
 control/../view/abstract_renderer.hpp:
 
 control/../view/../model/game_state.hpp:
+
+control/../model/item.hpp:
+
+control/../model/items.hpp:
+
+control/../model/request.hpp:
+
+control/../model/outcome.hpp:
+
+control/level.hpp:

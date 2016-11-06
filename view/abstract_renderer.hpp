@@ -22,6 +22,7 @@ class AbstractRenderer {
 		virtual void renderElement(VideoBuffer *videoBuffer, const Role role);
 		virtual void renderHUD(VideoBuffer *videoBuffer, const unsigned char HUDIndex);
 		virtual void renderVillage(VideoBuffer *videoBuffer, const VillageState &villageState);
+		virtual void renderText(VideoBuffer *videoBuffer, const Role role);
 
 	public:
 		AbstractRenderer(const GameState *gameState) {
@@ -41,6 +42,14 @@ class AbstractRenderer {
 			switch (gameState->cubeRoles[cubeId]) {
 				default:
 					renderElement(vBuf, gameState->cubeRoles[cubeId]);
+				break;
+
+				case DEBUG_PLUS:
+					renderText(vBuf, gameState->cubeRoles[cubeId]);
+				break;
+
+				case DEBUG_MINUS:
+					renderText(vBuf, gameState->cubeRoles[cubeId]);
 				break;
 
 				case CAULDRON:

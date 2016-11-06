@@ -7,6 +7,8 @@
 #pragma once
 
 extern Sifteo::AssetGroup GameAssets;
+extern const Sifteo::AssetImage Background2;
+extern const Sifteo::AssetImage Background;
 extern const Sifteo::AssetImage Insects;
 extern const Sifteo::AssetImage Mandragora;
 extern const Sifteo::AssetImage Eyes;
@@ -19,14 +21,12 @@ extern const Sifteo::AssetImage Eye_Smoothie;
 extern const Sifteo::PinnedAssetImage Mushrooms;
 extern const Sifteo::AssetImage Poison_Cake;
 extern const Sifteo::AssetImage Hallucinogenic_Infusion;
-extern const Sifteo::AssetImage Background2;
-extern const Sifteo::AssetImage Background;
 extern const Sifteo::AssetImage Blinding_Potion;
 extern const Sifteo::AssetImage Eye_Porridge;
-extern const Sifteo::AssetImage Blinding_Tobacco;
-extern const Sifteo::AssetImage Prophetic_Powder;
 extern const Sifteo::AssetImage Insect_Tobacco;
 extern const Sifteo::AssetImage Slime;
+extern const Sifteo::AssetImage Blinding_Tobacco;
+extern const Sifteo::AssetImage Prophetic_Powder;
 extern const Sifteo::AssetImage Eye_Drops;
 extern Sifteo::AssetGroup IconAssets;
 extern const Sifteo::AssetImage Icon;

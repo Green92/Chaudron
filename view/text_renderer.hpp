@@ -25,12 +25,10 @@ class TextRenderer : public AbstractRenderer {
 		}
 
 		virtual void renderElement(VideoBuffer *videoBuffer, const Role role) {
+			videoBuffer->setMode(BG0);
 			videoBuffer->bg0.erase();
 
 			switch (role) {
-				default:
-					//renderElement(vBuf, gameState->cubeRoles[cubeId]);
-				break;
 
 				case MUSHROOMS:
 					videoBuffer->bg0.image(vec(0,0), Mushrooms);
@@ -44,7 +42,6 @@ class TextRenderer : public AbstractRenderer {
 				case INSECTS:
 					videoBuffer->bg0.image(vec(0,0), Insects);
 				break;
-
 				case PRANCING_EYE:
 					videoBuffer->bg0.image(vec(0,0), Prancing_Eye);
 				break;
@@ -91,18 +88,26 @@ class TextRenderer : public AbstractRenderer {
 					videoBuffer->bg0.image(vec(0,0), Eye_Drops);
 				break;
 
+				default:
+					videoBuffer->setMode(BG0_ROM);
+					videoBuffer->bg0rom.erase();
+					videoBuffer->bg0rom.text(vec(1,1), "Erreur : bloc inconnu");
+				break;
+
 			}
 
 			//videoBuffer->bg0rom.text(vec(1, 1), Roles::getRoleName(role));
 		}
 
 		virtual void renderHUD(VideoBuffer *videoBuffer, const unsigned char HUDIndex) {
+			videoBuffer->setMode(BG0_ROM);
 			videoBuffer->bg0rom.erase();
 			videoBuffer->bg0rom.text(vec(1, 1), "HUD");
 			renderAssoc(videoBuffer, Associations::getAssociation(HUDIndex));
 		}
 
 		virtual void renderVillage(VideoBuffer *videoBuffer, const VillageState &villageState) {
+			videoBuffer->setMode(BG0_ROM);
 			videoBuffer->bg0rom.erase();
 			videoBuffer->bg0rom.text(vec(1, 1), "Village");
 
@@ -114,6 +119,12 @@ class TextRenderer : public AbstractRenderer {
 			for (int i=0; i<villageState.getNeeds().count(); i++) {
 				videoBuffer->bg0rom.text(vec(1, 2+(i*2)), Roles::getRoleName(villageState.getNeeds()[i]));
 			}
+		}
+
+		virtual void renderText(VideoBuffer *videoBuffer, const Role role) {
+			videoBuffer->setMode(BG0_ROM);
+			videoBuffer->bg0rom.erase();
+			videoBuffer->bg0rom.text(vec(1, 1), Roles::getRoleName(role));
 		}
 
 	public:

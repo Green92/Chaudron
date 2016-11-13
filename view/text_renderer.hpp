@@ -6,6 +6,8 @@
 #include "../model/association.hpp"
 #include "../model/associations.hpp"
 
+#define Font Font8
+
 class TextRenderer : public AbstractRenderer {
 
 	private:
@@ -97,22 +99,22 @@ class TextRenderer : public AbstractRenderer {
 		}
 
 		virtual void renderHUD(VideoBuffer *videoBuffer, const unsigned char HUDIndex) {
-			videoBuffer->bg0rom.erase();
-			videoBuffer->bg0rom.text(vec(1, 1), "HUD");
+			videoBuffer->bg0.erase();
+			videoBuffer->bg0.text(vec(1, 1), Font, "HUD");
 			renderAssoc(videoBuffer, Associations::getAssociation(HUDIndex));
 		}
 
 		virtual void renderVillage(VideoBuffer *videoBuffer, const VillageState &villageState) {
-			videoBuffer->bg0rom.erase();
-			videoBuffer->bg0rom.text(vec(1, 1), "Village");
+			videoBuffer->bg0.erase();
+			videoBuffer->bg0.text(vec(1, 1), Font, "Village");
 
 			String<6> str;
 			str << villageState.nextNeed;
 
-			videoBuffer->bg0rom.text(vec(10, 1), str);
+			videoBuffer->bg0.text(vec(10, 1), Font, str);
 
 			for (int i=0; i<villageState.getNeeds().count(); i++) {
-				videoBuffer->bg0rom.text(vec(1, 2+(i*2)), Roles::getRoleName(villageState.getNeeds()[i]));
+				videoBuffer->bg0.text(vec(1, 2+(i*2)), Font, Roles::getRoleName(villageState.getNeeds()[i]));
 			}
 		}
 

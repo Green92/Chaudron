@@ -74,12 +74,13 @@ const static char *roles_names[] = {
 };
 
 const static Role initialRoles[MAX_CUBES] = { 
-	CAULDRON, 	DEBUG_MINUS,
-	DEBUG_PLUS, MANDRAGORA,
+	CAULDRON,
+	MANDRAGORA,
 	INSECTS, 	EYES,
 	MUSHROOMS, 	MANDRAGORA,
 	INSECTS, 	EYES,
-	MUSHROOMS, 	MANDRAGORA
+	MUSHROOMS, 	MANDRAGORA,
+	DEBUG_PLUS, DEBUG_MINUS
 };
 
 const static unsigned char needs[] = {

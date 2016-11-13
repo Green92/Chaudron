@@ -20,6 +20,12 @@ typedef struct paire {
 static AssetSlot MainSlot = AssetSlot::allocate()
     .bootstrap(GameAssets);
 
+static AssetSlot ElementsSlot = AssetSlot::allocate()
+    .bootstrap(Elements);
+
+static AssetSlot FontsSlot = AssetSlot::allocate()
+    .bootstrap(Fonts);
+
 class AssetManager {
 
 	static const Paire images[NUM_IMG];

@@ -1,4 +1,4 @@
-APP = proto
+APP = Chaudron
 
 include $(SDK_DIR)/Makefile.defs
 
@@ -13,3 +13,6 @@ CCFLAGS += -DCUBE_ALLOCATION=12
 ASSETS_BUILD_PROOF := yes
 
 include $(SDK_DIR)/Makefile.rules
+
+run: $(APP).elf
+		Siftulator.exe -n 6 $(APP).elf

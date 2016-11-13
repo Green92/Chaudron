@@ -31,4 +31,4 @@ Miniature_Oracle		= image{"assets/Oracle\ miniature.png",			 height=128, width=1
 
 Fonts = group{quality = 5}
 Font16					= image{"assets/Font_16x16.png",				 width=16, 	height=16}
-Font8					= image{"assets/Font_8x8.png",					 width=8, 	height=8}
+Font8					= image{"assets/Font_8x8.png",					 width=8, 	height=8 }

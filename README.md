@@ -1,4 +1,4 @@
-# Sifteo_bunker
+# Chaudron
 
 ## Get sources
 
@@ -14,11 +14,15 @@
     #inside the project directory with the Sifteo SDK's shell :
     make
     
-## Run game
+## Run game on emulator
 
     #inside the project directory with the Sifteo SDK's shell :
-    #-n option allow to specify the number of cube in the simulation.
-    Siftulator -n 9 proto.elf
+    make run
+
+## Install game a connected Sifteo base
+
+    #inside the project directory with the Sifteo SDK's shell :
+    make install
 
 ## Developpement branch
 

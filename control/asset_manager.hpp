@@ -17,8 +17,6 @@ typedef struct paire {
 /**
  * Charge les assets en memoire
  */
-static AssetSlot MainSlot = AssetSlot::allocate()
-    .bootstrap(GameAssets);
 
 static AssetSlot ElementsSlot = AssetSlot::allocate()
     .bootstrap(Elements);

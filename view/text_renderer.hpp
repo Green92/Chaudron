@@ -93,6 +93,22 @@ class TextRenderer : public AbstractRenderer {
 					videoBuffer->bg0.image(vec(0,0), Eye_Drops);
 				break;
 
+				case TRUTH_COCKTAIL:
+					videoBuffer->bg0.image(vec(0,0), Truth_Cocktail);
+				break;
+
+				case LAST_BREAKFAST:
+					videoBuffer->bg0.image(vec(0,0), Last_Breakfast);
+				break;
+
+				case CANCER_COOKIE:
+					videoBuffer->bg0.image(vec(0,0), Cancer_Cookie);
+				break;
+
+				case MINIATURE_ORACLE:
+					videoBuffer->bg0.image(vec(0,0), Miniature_Oracle);
+				break;
+
 			}
 
 			//videoBuffer->bg0rom.text(vec(1, 1), Roles::getRoleName(role));

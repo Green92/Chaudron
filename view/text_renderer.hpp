@@ -87,6 +87,16 @@ class TextRenderer : public AbstractRenderer {
 				case EYE_DROPS:
 					videoBuffer->bg0.image(vec(0,0), Eye_Drops);
 				break;
+				case CANCER_COOKIE:
+					videoBuffer->bg0.image(vec(0,0), Cancer_Cookie);
+				break;
+				case MINIATURE_ORACLE:
+					videoBuffer->bg0.image(vec(0,0), Miniature_Oracle);
+				break
+				;case TRUTH_COCKTAIL:
+					videoBuffer->bg0.image(vec(0,0), Truth_Cocktail);
+				break;
+
 
 				default:
 					videoBuffer->setMode(BG0_ROM);

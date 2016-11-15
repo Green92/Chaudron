@@ -28,6 +28,8 @@ using namespace Sifteo;
 
  void main() {
 
+ 	//AudioTracker::play(Music);
+
  	static Game game;
 
     game.run();

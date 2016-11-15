@@ -1,14 +1,14 @@
 IconAssets = group{quality=9.95}
 Icon = image{"assets/icon.png"}
 
-GameAssets = group{}
-Background = image{"assets/chateau.png", quality=8}
-Background2 = image{"assets/brackets.png", quality=8}
-Mushrooms = image{"assets/Champignons.png", quality=8, pinned=1}
-Insects = image{"assets/Insectes.png", quality=8}
-Mandragora = image{"assets/Mandragore.png", quality=8}
-Eyes = image{"assets/Yeux.png", quality=8}
-Prancing_Eye = image{"assets/Oeil\ sauteur.png", quality=8}
+
+
+GameAssets = group{quality=9}
+Mushrooms = image{"assets/Champignons.png"}
+Insects = image{"assets/Insectes.png"}
+Mandragora = image{"assets/Mandragore.png"}
+Eyes = image{"assets/Yeux.png"}
+Prancing_Eye = image{"assets/Oeil\ sauteur.png"}
 Eye_Smoothie = image{"assets/Smoothie\ de\ vision.png"}
 Enraged_Eye = image{"assets/Creature\ feroce.png"}
 Poison_Cake = image{"assets/Gateau\ empoisonne.png"}
@@ -23,3 +23,7 @@ Slime = image{"assets/Slime.png"}
 Insect_Tobacco = image{"assets/Tabac\ dinsectes.png"}
 Blinding_Tobacco = image{"assets/Tabaveuglant.png"}
 Eye_Drops = image{"assets/Gouttes\ pour\ les\ yeux.png"}
+Cancer_Cookie = image{"assets/Cookie.png"}
+Truth_Cocktail = image{"assets/cocktail\ de\ verite.png"}
+Miniature_Oracle = image{"assets/Oracle\ miniature.png"}
+

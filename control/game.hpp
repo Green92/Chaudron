@@ -148,6 +148,8 @@ class Game {
 
 			System::setCubeRange(MIN_CUBES, MAX_CUBES);
 
+			Sifteo::AudioChannel(0).play(Musique, Sifteo::AudioChannel::REPEAT);
+
 			// We're entirely event-driven. Everything is
 		    // updated by SensorListener's event callbacks.
 		    TimeStep ts;

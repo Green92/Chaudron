@@ -10,6 +10,9 @@
 
 #define Font Font8
 
+#define SCREEN_TILE_NUMBER 16
+#define SCREEN_CHAR_NUMBER SCREEN_TILE_NUMBER
+
 class TextRenderer : public AbstractRenderer {
 
 	private:
@@ -26,16 +29,16 @@ class TextRenderer : public AbstractRenderer {
 		void renderRequest(VideoBuffer *videoBuffer, const char *request) {
 			videoBuffer->bg0.image(vec(0,0), Mushrooms);
 
-			drawCenteredTextMultiLine(videoBuffer, 5, request);
+			drawCenteredTextMultiLine(videoBuffer, 5, request, 1);
 		}
 
 		void drawTextMonoLine(VideoBuffer *videoBuffer, UInt2 pos, const char * str) {
-			videoBuffer->bg1.fillMask(pos, vec((int)strnlen(str, 16), 1));
+			videoBuffer->bg1.fillMask(pos, vec((int)strnlen(str, SCREEN_CHAR_NUMBER), 1));
 			videoBuffer->bg1.text(pos, Font, str);
 		}
 
 		void drawCenteredTextMonoLine(VideoBuffer *videoBuffer, int line, const char * str) {
-			drawTextMonoLine(videoBuffer, vec((int) (16 - strnlen(str, 16)) / 2, line), str);
+			drawTextMonoLine(videoBuffer, vec((int) (SCREEN_CHAR_NUMBER - strnlen(str, SCREEN_CHAR_NUMBER)) / 2, line), str);
 		}
 
 		void strcpy(char *dst, const char *src, unsigned char size) {
@@ -48,21 +51,33 @@ class TextRenderer : public AbstractRenderer {
 			dst[i] = '\0';
 		}
 
-		unsigned char drawCenteredTextMultiLine(VideoBuffer *videoBuffer, int startLine, const char * str) {
-			char line[17];
+		unsigned char drawCenteredTextMultiLine(VideoBuffer *videoBuffer, int startLine, const char * str, unsigned char marginLeftRight = 0) {
+			//Have the capacity to contain
+			//as much character as the screen
+			//and one more for the termination char ('\0')
+			char line[SCREEN_CHAR_NUMBER + 1];
+
+			//The len of the string to print
 			unsigned char len = strnlen(str, 100);
+
+			//An index used to browse the string.
 			int strIndex = 0;
+
+			//The number of line we have printed on.
 			int nbLine = 0;
+
+			//The maximum number of char by line.
+			unsigned char maxCharByLine = SCREEN_CHAR_NUMBER-marginLeftRight*2;
 
 			LOG("----------------------------------------\n");
 			LOG("Let's print \"%s\" on multiple lines ! Youpi\n", str);
 			LOG("Ok, we start to print on line number %d\n", startLine+1);
 
-			while (strnlen(str+strIndex, 100) > 16) {
+			while (strnlen(str+strIndex, 100) > maxCharByLine) {
 				
-				LOG("\"%s\" is bigger than 16\n", str+strIndex);
+				LOG("\"%s\" is bigger than %d\n", str+strIndex, maxCharByLine);
 				
-				for (int i=strIndex+15; i>strIndex; i--) {
+				for (int i=strIndex+maxCharByLine; i>strIndex; i--) {
 					
 					LOG("'str at index %d is %c'\n", i, str[i]);
 					
@@ -78,9 +93,9 @@ class TextRenderer : public AbstractRenderer {
 					}
 				}
 
-				LOG("strIndex is %d and str is %d char long :  ", strIndex, strnlen(str, 100));
+				LOG("strIndex is %d and str is %d char long :  ", strIndex, len);
 
-				if (strIndex >= strnlen(str, 100)) {
+				if (strIndex >= len) {
 					LOG("Stopping algorithm.\n");
 					return nbLine;
 				}

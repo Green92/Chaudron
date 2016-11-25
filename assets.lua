@@ -38,7 +38,8 @@ BesoinRempli = 				sound{"assets/wav/BesoinRempli16k.wav"}
 CombinaisonValide = 		sound{"assets/wav/CombinaisonValide16k.wav"}
 GameOver = 					sound{"assets/wav/GameOver16k.wav"}
 MauvaiseCombinaison = 		sound{"assets/wav/MauvaiseCombinaison16k.wav"}
-Musique = 					sound{"assets/wav/Musique220BPM16k.wav"}
+MusiqueLente = 				sound{"assets/wav/Musique90BPM16k.wav"}
+MusiqueRapide = 			sound{"assets/wav/Musique220BPM16k.wav"}
 NouveauBesoin = 			sound{"assets/wav/NouveauBesoin16k.wav"}
 Reset = 					sound{"assets/wav/Reset16k.wav"}
 

@@ -1,6 +1,7 @@
 #include <sifteo.h>
 
 #include "constants.hpp"
+#include "audio_manager.hpp"
 
 #include "../model/associations.hpp"
 #include "../view/text_renderer.hpp"
@@ -22,6 +23,7 @@ class Game {
 		TextRenderer renderer = TextRenderer(&gameState);
 		TiltShakeRecognizer motion[MAX_CUBES];
 		Level level = Level(&gameState, &renderer);
+		AudioManager audioManager;
 
 		void checkAssoc(unsigned firstID, unsigned secondID) {
 			const Association *assoc = Associations::search(gameState.cubeRoles[firstID], gameState.cubeRoles[secondID]);
@@ -30,8 +32,12 @@ class Game {
     			gameState.cubeRoles[firstID] = assoc->getResult1();
     			gameState.cubeRoles[secondID] = assoc->getResult2();
 
+    			audioManager.playSound(CombinaisonValide);
+
 	        	renderer.updateCube(firstID);
 	        	renderer.updateCube(secondID);
+	        } else {
+	        	audioManager.playSound(MauvaiseCombinaison);
 	        }
 		}
 
@@ -42,6 +48,16 @@ class Game {
         	if (gameState.villageState.removeNeed(role)) {
         		renderer.updateCube(0);
         	}
+		}
+
+		void resetItem(unsigned cubeId) {
+			Role initialRole = Roles::getInitialRole(cubeId);
+
+			if (gameState.cubeRoles[cubeId] != initialRole) {
+				audioManager.playSound(Reset);
+				gameState.cubeRoles[cubeId] = initialRole;
+				renderer.updateCube(cubeId);
+			}
 		}
 
 		void onConnect(unsigned id) {
@@ -120,8 +136,7 @@ class Game {
 	        		break;
 
 	        		default:
-	        			gameState.cubeRoles[id] = Roles::getInitialRole(id);
-	        			renderer.updateCube(id);
+	        			resetItem(id);
 	        		break;
 	        	}
 	        }
@@ -148,7 +163,7 @@ class Game {
 
 			System::setCubeRange(MIN_CUBES, MAX_CUBES);
 
-			Sifteo::AudioChannel(0).play(Musique, Sifteo::AudioChannel::REPEAT);
+			audioManager.playMusic(MusiqueLente);
 
 			// We're entirely event-driven. Everything is
 		    // updated by SensorListener's event callbacks.

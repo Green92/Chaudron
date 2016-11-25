@@ -6,6 +6,8 @@
 #include "../model/association.hpp"
 #include "../model/associations.hpp"
 
+#include <sifteo/string.h>
+
 #define Font Font8
 
 class TextRenderer : public AbstractRenderer {
@@ -21,9 +23,79 @@ class TextRenderer : public AbstractRenderer {
 			videoBuffer->bg0rom.text(vec(1, 9), Roles::getRoleName(assoc->getResult2()));
 		}
 
+		void renderRequest(VideoBuffer *videoBuffer, const char *request) {
+			videoBuffer->bg0.image(vec(0,0), Mushrooms);
+
+			drawCenteredTextMultiLine(videoBuffer, 5, request);
+		}
+
+		void drawTextMonoLine(VideoBuffer *videoBuffer, UInt2 pos, const char * str) {
+			videoBuffer->bg1.fillMask(pos, vec((int)strnlen(str, 16), 1));
+			videoBuffer->bg1.text(pos, Font, str);
+		}
+
+		void drawCenteredTextMonoLine(VideoBuffer *videoBuffer, int line, const char * str) {
+			drawTextMonoLine(videoBuffer, vec((int) (16 - strnlen(str, 16)) / 2, line), str);
+		}
+
+		void strcpy(char *dst, const char *src, unsigned char size) {
+			unsigned char i;
+
+			for (i = 0; i<size; i++) {
+				dst[i] = src[i];
+			}
+
+			dst[i] = '\0';
+		}
+
+		unsigned char drawCenteredTextMultiLine(VideoBuffer *videoBuffer, int startLine, const char * str) {
+			char line[17];
+			unsigned char len = strnlen(str, 100);
+			int strIndex = 0;
+			int nbLine = 0;
+
+			LOG("----------------------------------------\n");
+			LOG("Let's print \"%s\" on multiple lines ! Youpi\n", str);
+			LOG("Ok, we start to print on line number %d\n", startLine+1);
+
+			while (strnlen(str+strIndex, 100) > 16) {
+				
+				LOG("\"%s\" is bigger than 16\n", str+strIndex);
+				
+				for (int i=strIndex+15; i>strIndex; i--) {
+					
+					LOG("'str at index %d is %c'\n", i, str[i]);
+					
+					if (str[i] == ' ') {
+						strcpy(line, str+strIndex, i-strIndex);
+						
+						LOG("Ok, printing \"%s\" on line %d\n", line, startLine+nbLine);
+						
+						drawCenteredTextMonoLine(videoBuffer, startLine+nbLine, line);
+						strIndex += i-strIndex+1;
+						nbLine++;
+						break;
+					}
+				}
+
+				LOG("strIndex is %d and str is %d char long :  ", strIndex, strnlen(str, 100));
+
+				if (strIndex >= strnlen(str, 100)) {
+					LOG("Stopping algorithm.\n");
+					return nbLine;
+				}
+
+				LOG("We have still some work.\n");
+			}
+
+			LOG("\"%s\" is lower than 16\nOk, printing \"%s\" on line %d\n", str+strIndex, str+strIndex, startLine+nbLine);
+			drawCenteredTextMonoLine(videoBuffer, startLine+nbLine, str+strIndex);
+			return ++nbLine;
+		}
+
 	protected:
 		Sifteo::VideoMode getVideoMode() const {
-			return BG0;
+			return BG0_BG1;
 		}
 
 		virtual void renderElement(VideoBuffer *videoBuffer, const Role role) {
@@ -122,16 +194,11 @@ class TextRenderer : public AbstractRenderer {
 
 		virtual void renderVillage(VideoBuffer *videoBuffer, const VillageState &villageState) {
 			videoBuffer->bg0.erase();
-			videoBuffer->bg0.text(vec(1, 1), Font, "Village");
+			
+			drawCenteredTextMonoLine(videoBuffer, 1, "Village");
 
-			String<6> str;
-			str << villageState.nextNeed;
-
-			videoBuffer->bg0.text(vec(10, 1), Font, str);
-
-			for (int i=0; i<villageState.getNeeds().count(); i++) {
-				videoBuffer->bg0.text(vec(1, 2+(i*2)), Font, Roles::getRoleName(villageState.getNeeds()[i]));
-			}
+			if (villageState.currentRequest != NULL)
+				renderRequest(videoBuffer, villageState.currentRequest->string());
 		}
 
 	public:

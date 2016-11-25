@@ -9,7 +9,7 @@
 #include "../model/item.hpp"
 #include "../model/items.hpp"
 
-#include "../model/request.hpp"
+#include "../model/requests.hpp"
 
 #include "level.hpp"
 
@@ -22,8 +22,8 @@ class Game {
 		GameState gameState;
 		TextRenderer renderer = TextRenderer(&gameState);
 		TiltShakeRecognizer motion[MAX_CUBES];
-		Level level = Level(&gameState, &renderer);
 		AudioManager audioManager;
+		Requests requests;
 
 		void checkAssoc(unsigned firstID, unsigned secondID) {
 			const Association *assoc = Associations::search(gameState.cubeRoles[firstID], gameState.cubeRoles[secondID]);
@@ -44,10 +44,6 @@ class Game {
 		void checkNeed(unsigned firstID, unsigned secondID) {
 			Role role = gameState.cubeRoles[firstID] == CAULDRON ? 
         	gameState.cubeRoles[secondID] : gameState.cubeRoles[firstID];
-
-        	if (gameState.villageState.removeNeed(role)) {
-        		renderer.updateCube(0);
-        	}
 		}
 
 		void resetItem(unsigned cubeId) {
@@ -121,20 +117,6 @@ class Game {
 	        		case CAULDRON:
 	        		break;
 
-	        		case DEBUG_MINUS:
-	        			if (level.needInt() > 2) {
-	        				level.needInt()--;
-	        				gameState.villageState.nextNeed = level.needInt() * 1000;
-	        			}
-	        		break;
-
-	        		case DEBUG_PLUS:
-	        			if (level.needInt() < 30)  {
-	        				 level.needInt()++;
-	        				 gameState.villageState.nextNeed = level.needInt() * 1000;
-	        			}
-	        		break;
-
 	        		default:
 	        			resetItem(id);
 	        		break;
@@ -165,10 +147,13 @@ class Game {
 
 			audioManager.playMusic(MusiqueLente);
 
+			gameState.villageState.currentRequest = requests.getRandomRequest();
+			renderer.updateCube(0);
+
 			// We're entirely event-driven. Everything is
 		    // updated by SensorListener's event callbacks.
 		    TimeStep ts;
-		    while (level.live(ts.delta()))
+		    while (true)
 		    {
 		        System::paint();
 		        ts.next();

@@ -29,7 +29,7 @@ Cancer_Cookie			= image{"assets/png/Cookie.png",		 			 height=128, width=128}
 Miniature_Oracle		= image{"assets/png/Oracle\ miniature.png",			 height=128, width=128}
 
 
-Fonts = group{quality = 5}
+Fonts = group{quality = 10}
 Font16					= image{"assets/png/Font_16x16.png",				 width=16, 	height=16}
 Font8					= image{"assets/png/Font_8x8.png",					 width=8, 	height=8 }
 

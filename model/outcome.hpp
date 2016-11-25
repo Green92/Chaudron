@@ -4,14 +4,14 @@
 class Outcome {
 	private:
 		Role gift;
-		unsigned char gratification;
+		int gratification;
 
 	public:
 		Outcome() {
 			this->gratification = 0;
 		}
 
-		Outcome(Role gift, unsigned char gratification) {
+		Outcome(Role gift, int gratification) {
 			this->gift = gift;
 			this->gratification = gratification;
 		}
@@ -20,7 +20,7 @@ class Outcome {
 			return this->gift == gift;
 		}
 
-		unsigned char getGratification() const {
+		int getGratification() const {
 			return gratification;
 		}
 };

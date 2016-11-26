@@ -129,7 +129,7 @@ class Requests {
 			initRequests();
 		}
 
-		const Request *getRandomRequest() {
+		Request *getRandomRequest() {
 			return &reqs[rng.randrange<unsigned int>(0, 10)];
 		}
 };

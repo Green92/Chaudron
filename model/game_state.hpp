@@ -14,7 +14,8 @@
 #include "request.hpp"
 
 struct VillageState {
-		const Request *currentRequest = NULL;
+		Request *currentRequest = NULL;
+		unsigned int score = 0;
 };
 
 typedef struct gameState {

@@ -28,7 +28,7 @@ class Request {
 		}
 
 		const Outcome *isMatchingOutcome(Role gift) {
-			for (OutcomeArray::iterator oc = outcomes.begin(); oc != outcomes.end(); oc++) {
+			for (OutcomeArray::const_iterator oc = outcomes.begin(); oc != outcomes.end(); oc++) {
 				if (oc->match(gift)) {
 					return &(*oc);
 				}

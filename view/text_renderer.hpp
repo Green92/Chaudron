@@ -16,14 +16,14 @@
 class TextRenderer : public AbstractRenderer {
 
 	private:
-		void renderAssoc(VideoBuffer *videoBuffer, const Association *assoc) {
-			videoBuffer->bg0rom.text(vec(1, 3), Roles::getRoleName(assoc->getItem1()));
-			videoBuffer->bg0rom.text(vec(1, 4), "+");
-			videoBuffer->bg0rom.text(vec(1, 5), Roles::getRoleName(assoc->getItem2()));
-			videoBuffer->bg0rom.text(vec(1, 6), "=");
-			videoBuffer->bg0rom.text(vec(1, 7), Roles::getRoleName(assoc->getResult1()));
-			videoBuffer->bg0rom.text(vec(1, 8), "+");
-			videoBuffer->bg0rom.text(vec(1, 9), Roles::getRoleName(assoc->getResult2()));
+		void strcpy(char *dst, const char *src, unsigned char size) {
+			unsigned char i;
+
+			for (i = 0; i<size; i++) {
+				dst[i] = src[i];
+			}
+
+			dst[i] = '\0';
 		}
 
 		void renderRequest(VideoBuffer *videoBuffer, const char *request) {
@@ -39,16 +39,6 @@ class TextRenderer : public AbstractRenderer {
 
 		void drawCenteredTextMonoLine(VideoBuffer *videoBuffer, int line, const char * str) {
 			drawTextMonoLine(videoBuffer, vec((int) (SCREEN_CHAR_NUMBER - strnlen(str, SCREEN_CHAR_NUMBER)) / 2, line), str);
-		}
-
-		void strcpy(char *dst, const char *src, unsigned char size) {
-			unsigned char i;
-
-			for (i = 0; i<size; i++) {
-				dst[i] = src[i];
-			}
-
-			dst[i] = '\0';
 		}
 
 		unsigned char drawCenteredTextMultiLine(VideoBuffer *videoBuffer, int startLine, const char * str, unsigned char marginLeftRight = 0) {
@@ -202,13 +192,12 @@ class TextRenderer : public AbstractRenderer {
 		}
 
 		virtual void renderHUD(VideoBuffer *videoBuffer, const unsigned char HUDIndex) {
-			videoBuffer->bg0.erase();
-			videoBuffer->bg0.text(vec(1, 1), Font, "HUD");
-			renderAssoc(videoBuffer, Associations::getAssociation(HUDIndex));
+		
 		}
 
 		virtual void renderVillage(VideoBuffer *videoBuffer, const VillageState &villageState) {
 			videoBuffer->bg0.erase();
+			videoBuffer->bg1.erase();
 			
 			drawCenteredTextMonoLine(videoBuffer, 1, "Village");
 

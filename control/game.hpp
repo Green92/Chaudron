@@ -42,8 +42,24 @@ class Game {
 		}
 
 		void checkNeed(unsigned firstID, unsigned secondID) {
-			Role role = gameState.cubeRoles[firstID] == CAULDRON ? 
-        	gameState.cubeRoles[secondID] : gameState.cubeRoles[firstID];
+			unsigned otherId = gameState.cubeRoles[firstID] != CAULDRON ? 
+				firstID : secondID;
+
+			Role role = gameState.cubeRoles[otherId];
+
+        	const Outcome *outcome = gameState.villageState.currentRequest->isMatchingOutcome(role);
+
+        	if (outcome != NULL) {
+        		gameState.villageState.currentRequest = requests.getRandomRequest();
+				renderer.updateCube(0);
+				audioManager.playSound(BesoinRempli);
+				gameState.villageState.score += outcome->getGratification();
+				gameState.cubeRoles[otherId] = Roles::getInitialRole(otherId);
+				renderer.updateCube(otherId);
+				LOG("score : %d\n", gameState.villageState.score);
+        	} else {
+        		audioManager.playSound(MauvaiseCombinaison);
+        	}
 		}
 
 		void resetItem(unsigned cubeId) {

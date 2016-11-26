@@ -10,6 +10,7 @@
 #include "control/asset_manager.hpp"
 
 #include "control/game.hpp"
+#include "control/game_state.hpp"
 
 /**
  * Espace de nom par defaut
@@ -29,6 +30,9 @@ using namespace Sifteo;
  void main() {
 
  	static Game game;
+ 	static GameState playState(&game);
+
+ 	game.runState(&playState);
 
     game.run();
 

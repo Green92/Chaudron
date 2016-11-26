@@ -2,7 +2,6 @@
 #define ABSTRACT_RENDERER_HPP
 
 #include "../control/constants.hpp"
-#include "../model/game_state.hpp"
 
 class AbstractRenderer {
 
@@ -15,17 +14,12 @@ class AbstractRenderer {
 		}
 
 	protected:
-		const GameState *gameState;
-
 		virtual Sifteo::VideoMode getVideoMode() const;
-		
-		virtual void renderElement(VideoBuffer *videoBuffer, const Role role);
-		virtual void renderHUD(VideoBuffer *videoBuffer, const unsigned char HUDIndex);
-		virtual void renderVillage(VideoBuffer *videoBuffer, const VillageState &villageState);
+		virtual void renderCube(unsigned char id, Sifteo::VideoBuffer *buffer);
 
 	public:
-		AbstractRenderer(const GameState *gameState) {
-			this->gameState = gameState;
+		AbstractRenderer() {
+
 		}
 
 		void registerCube(unsigned char cubeId) {
@@ -35,22 +29,8 @@ class AbstractRenderer {
 		}
 
 		void updateCube(unsigned char cubeId) {
-			
 			VideoBuffer *vBuf = getVideoBuffer(cubeId);
-
-			switch (gameState->cubeRoles[cubeId]) {
-				default:
-					renderElement(vBuf, gameState->cubeRoles[cubeId]);
-				break;
-
-				case CAULDRON:
-					renderVillage(vBuf, gameState->villageState);
-				break;
-
-				case HUD:
-					renderHUD(vBuf, gameState->HUDIndex);
-				break;
-			}
+			renderCube(cubeId, vBuf);
 		}
 
 		void updateAll() {

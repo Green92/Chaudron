@@ -1,17 +1,8 @@
 #include <sifteo.h>
 
 #include "constants.hpp"
-#include "audio_manager.hpp"
 
-#include "../model/associations.hpp"
-#include "../view/text_renderer.hpp"
-
-#include "../model/item.hpp"
-#include "../model/items.hpp"
-
-#include "../model/requests.hpp"
-
-#include "level.hpp"
+#include "state.hpp"
 
 using namespace Sifteo;
 
@@ -19,158 +10,72 @@ class Game {
 
 	private:
 
-		GameState gameState;
-		TextRenderer renderer = TextRenderer(&gameState);
-		TiltShakeRecognizer motion[MAX_CUBES];
-		AudioManager audioManager;
-		Requests requests;
-
-		void checkAssoc(unsigned firstID, unsigned secondID) {
-			const Association *assoc = Associations::search(gameState.cubeRoles[firstID], gameState.cubeRoles[secondID]);
-
-	        if (assoc != NULL) {
-    			gameState.cubeRoles[firstID] = assoc->getResult1();
-    			gameState.cubeRoles[secondID] = assoc->getResult2();
-
-    			audioManager.playSound(CombinaisonValide);
-
-	        	renderer.updateCube(firstID);
-	        	renderer.updateCube(secondID);
-	        } else {
-	        	audioManager.playSound(MauvaiseCombinaison);
-	        }
-		}
-
-		void checkNeed(unsigned firstID, unsigned secondID) {
-			unsigned otherId = gameState.cubeRoles[firstID] != CAULDRON ? 
-				firstID : secondID;
-
-			Role role = gameState.cubeRoles[otherId];
-
-        	const Outcome *outcome = gameState.villageState.currentRequest->isMatchingOutcome(role);
-
-        	if (outcome != NULL) {
-        		gameState.villageState.currentRequest = requests.getRandomRequest();
-				renderer.updateCube(0);
-				audioManager.playSound(BesoinRempli);
-				gameState.villageState.score += outcome->getGratification();
-				gameState.cubeRoles[otherId] = Roles::getInitialRole(otherId);
-				renderer.updateCube(otherId);
-				LOG("score : %d\n", gameState.villageState.score);
-        	} else {
-        		audioManager.playSound(MauvaiseCombinaison);
-        	}
-		}
-
-		void resetItem(unsigned cubeId) {
-			Role initialRole = Roles::getInitialRole(cubeId);
-
-			if (gameState.cubeRoles[cubeId] != initialRole) {
-				audioManager.playSound(Reset);
-				gameState.cubeRoles[cubeId] = initialRole;
-				renderer.updateCube(cubeId);
-			}
-		}
+	protected:
+		State *currentState = NULL;
 
 		void onConnect(unsigned id) {
 			LOG("Cube connected: %d\n", id);
 
-			renderer.registerCube(id);
-			renderer.updateCube(id);
-
-			motion[id].attach(id);
+			currentState->onCubeConnected(id);
 		}
 
 		void onNeighborRemove(unsigned firstID, unsigned firstSide, unsigned secondID, unsigned secondSide)
 	    {
 	        LOG("Neighbor remove: %02x:%d - %02x:%d\n", firstID, firstSide, secondID, secondSide);
+
+	        currentState->onNeighborRemove(firstID, secondID);
 	    }
 
 	    void onNeighborAdd(unsigned firstID, unsigned firstSide, unsigned secondID, unsigned secondSide)
 	    {
 	        LOG("Neighbor add: %02x:%d - %02x:%d\n", firstID, firstSide, secondID, secondSide);
 
-	        if (gameState.cubeRoles[firstID] != CAULDRON && gameState.cubeRoles[secondID] != CAULDRON) {
-	        	checkAssoc(firstID, secondID);
-	        } else {
-	        	checkNeed(firstID, secondID);
-	        }
-	    }
-
-	    void onShake(unsigned id) {
-
-	    }
-
-	    void onTilt(unsigned id) {
-
-	    }
-
-        void onAccelChange(unsigned id)
-	    {
-	        unsigned changeFlags = motion[id].update();
-	        if (changeFlags) {
-	            // Tilt/shake changed
-
-	            LOG("Tilt/shake changed, flags=%08x\n", changeFlags);
-
-	            //TODO Call onShake or/and onTilt depending of changeFlags
-	            //Require to understand the meaning of differents flags...
-	        }
+	        currentState->onNeighborAdd(firstID, secondID);
 	    }
 
 	    void onTouch(unsigned id)
 	    {
-	        CubeID cube(id);
+	    	CubeID cube(id);
 	        LOG("Touch event on cube #%d, state=%d\n", id, cube.isTouching());
 
-	        if (cube.isTouching()) {
-	        	switch (gameState.cubeRoles[id]) {
-	        		case HUD:
-	        			gameState.HUDIndex = (gameState.HUDIndex + 1) % ASSOCIATIONS_NUMBER;
-	        			renderer.updateCube(id);
-	        		break;
-
-	        		case CAULDRON:
-	        		break;
-
-	        		default:
-	        			resetItem(id);
-	        		break;
-	        	}
-	        }
+	        currentState->onCubeTouch(id);
 	    }
 
 	    void listenEvents() {
+	    	LOG("Game : listening events\n");
+
 	    	Events::neighborAdd.set(&Game::onNeighborAdd, this);
         	Events::neighborRemove.set(&Game::onNeighborRemove, this);
         	Events::cubeConnect.set(&Game::onConnect, this);
-        	Events::cubeAccelChange.set(&Game::onAccelChange, this);
         	Events::cubeTouch.set(&Game::onTouch, this);
-
-        	// Handle already-connected cubes
-	        for (CubeID cube : CubeSet::connected()) {
-	            onConnect(cube);
-	            onAccelChange(cube);
-	        }
 	    }
 
 	public:
 
+		void runState(State *state) {
+			this->currentState = state;
+			state->start();
+		}
+
 		unsigned run() {
+			LOG("Game : launched\n");
+
+			if (currentState == NULL) {
+				LOG("Game : no state defined : exiting\n");
+				return 1;
+			}
+
 			listenEvents();
 
 			System::setCubeRange(MIN_CUBES, MAX_CUBES);
-
-			audioManager.playMusic(MusiqueLente);
-
-			gameState.villageState.currentRequest = requests.getRandomRequest();
-			renderer.updateCube(0);
 
 			// We're entirely event-driven. Everything is
 		    // updated by SensorListener's event callbacks.
 		    TimeStep ts;
 		    while (true)
 		    {
+		    	currentState->updateState(ts.delta());
+
 		        System::paint();
 		        ts.next();
 		    }
@@ -179,3 +84,7 @@ class Game {
 		}
 
 };
+
+void State::runState(State *state) {
+	game->runState(state);
+}

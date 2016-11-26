@@ -28,6 +28,9 @@ Last_Breakfast			= image{"assets/png/Dernier\ petit\ dej.png",		 height=128, wid
 Cancer_Cookie			= image{"assets/png/Cookie.png",		 			 height=128, width=128}
 Miniature_Oracle		= image{"assets/png/Oracle\ miniature.png",			 height=128, width=128}
 
+--Temporaire
+Cauldron 				= image{"assets/png/Champignons.png", 				 height=128, width=128}
+
 
 Fonts = group{quality = 10}
 Font16					= image{"assets/png/Font_16x16.png",				 width=16, 	height=16}

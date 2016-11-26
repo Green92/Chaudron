@@ -23,21 +23,19 @@ class Request {
 		Request(const char *req, OutcomeArray outcomes) {
 			this->req = req;
 			this->outcomes = outcomes;
-
-			LOG("number of outcome : %d\n", this->outcomes.count());
 		}
 
 		const Outcome *isMatchingOutcome(Role gift) {
-			for (OutcomeArray::const_iterator oc = outcomes.begin(); oc != outcomes.end(); oc++) {
+			for (OutcomeArray::iterator oc = outcomes.begin(); oc != outcomes.end(); oc++) {
 				if (oc->match(gift)) {
-					return &(*oc);
+					return (const Outcome *) &(*oc);
 				}
 			}
 
 			return NULL;
 		}
 
-		const char *string() const {
+		const char *getString() const {
 			return req;
 		}
 };

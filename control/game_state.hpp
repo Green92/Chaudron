@@ -10,7 +10,9 @@
 
 #include "../view/game_renderer.hpp"
 
-#include "../control/audio_manager.hpp"
+#include "audio_manager.hpp"
+
+#include "state.hpp"
 
 class GameState : public State {
 	private:

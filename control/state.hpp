@@ -17,7 +17,7 @@ class State {
 		}
 
 		void start() {
-			for (CubeID cube : CubeSet::connected()) {
+			for (Sifteo::CubeID cube : Sifteo::CubeSet::connected()) {
 	            onCubeConnected(cube);
 	        }
 
@@ -25,7 +25,7 @@ class State {
 		}
 
 
-		virtual void updateState(TimeDelta deltaTime) {
+		virtual void updateState(Sifteo::TimeDelta deltaTime) {
 
 		}
 

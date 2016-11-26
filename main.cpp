@@ -7,9 +7,8 @@
  */
 #include "assets.gen.h"
 
-#include "control/asset_manager.hpp"
-
 #include "control/game.hpp"
+
 #include "control/game_state.hpp"
 
 /**
@@ -27,6 +26,22 @@ using namespace Sifteo;
     .cubeRange(0, CUBE_ALLOCATION)
     .icon(Icon);
 
+/**
+ * Charge les images en memoire
+ */
+static AssetSlot ElementsSlot = AssetSlot::allocate()
+    .bootstrap(Elements);
+
+/**
+ * Charge les polices en memoire
+ */
+static AssetSlot FontsSlot = AssetSlot::allocate()
+    .bootstrap(Fonts);
+
+
+/**
+ * Point d'entree du programme
+ */
  void main() {
 
  	static Game game;

@@ -10,8 +10,11 @@
 
 #define Font Font8
 
+#define LINE_HEIGHT 1
+#define CHAR_WIDTH 1
+
 #define SCREEN_TILE_NUMBER 16
-#define SCREEN_CHAR_NUMBER SCREEN_TILE_NUMBER
+#define SCREEN_CHAR_NUMBER SCREEN_TILE_NUMBER / CHAR_WIDTH
 
 class TextRenderer : public AbstractRenderer {
 
@@ -29,16 +32,16 @@ class TextRenderer : public AbstractRenderer {
 		void renderRequest(VideoBuffer *videoBuffer, const char *request) {
 			videoBuffer->bg0.image(vec(0,0), Mushrooms);
 
-			drawCenteredTextMultiLine(videoBuffer, 5, request, 1);
+			drawCenteredTextMultiLine(videoBuffer, 5, request, 0);
 		}
 
 		void drawTextMonoLine(VideoBuffer *videoBuffer, UInt2 pos, const char * str) {
-			videoBuffer->bg1.fillMask(pos, vec((int)strnlen(str, SCREEN_CHAR_NUMBER), 1));
+			videoBuffer->bg1.fillMask(pos, vec((int)strnlen(str, SCREEN_CHAR_NUMBER) * CHAR_WIDTH, LINE_HEIGHT));
 			videoBuffer->bg1.text(pos, Font, str);
 		}
 
 		void drawCenteredTextMonoLine(VideoBuffer *videoBuffer, int line, const char * str) {
-			drawTextMonoLine(videoBuffer, vec((int) (SCREEN_CHAR_NUMBER - strnlen(str, SCREEN_CHAR_NUMBER)) / 2, line), str);
+			drawTextMonoLine(videoBuffer, vec((int) (SCREEN_CHAR_NUMBER - strnlen(str, SCREEN_CHAR_NUMBER) * CHAR_WIDTH) / 2, line), str);
 		}
 
 		unsigned char drawCenteredTextMultiLine(VideoBuffer *videoBuffer, int startLine, const char * str, unsigned char marginLeftRight = 0) {
@@ -78,7 +81,7 @@ class TextRenderer : public AbstractRenderer {
 						
 						drawCenteredTextMonoLine(videoBuffer, startLine+nbLine, line);
 						strIndex += i-strIndex+1;
-						nbLine++;
+						nbLine+=LINE_HEIGHT;
 						break;
 					}
 				}

@@ -15,4 +15,4 @@ ASSETS_BUILD_PROOF := yes
 include $(SDK_DIR)/Makefile.rules
 
 run: $(APP).elf
-		Siftulator.exe -n 6 $(APP).elf
+		Siftulator.exe -n 5 $(APP).elf

@@ -9,19 +9,22 @@ class State {
 		Game *game;
 
 	protected:
-		void runState(State *state);
+		Sifteo::VideoBuffer *vBuf;
+
+		void runState(State *state, void *dataPtr = NULL);
 
 	public:
-		State(Game *game) {
+		State(Game *game, Sifteo::VideoBuffer *vBuf) {
 			this->game = game;
+			this->vBuf = vBuf;
 		}
 
-		void start() {
+		void start(void *dataPtr) {
 			for (Sifteo::CubeID cube : Sifteo::CubeSet::connected()) {
 	            onCubeConnected(cube);
 	        }
 
-	        onStateStart();
+	        onStateStart(dataPtr);
 		}
 
 
@@ -29,7 +32,7 @@ class State {
 
 		}
 
-		virtual void onStateStart() {
+		virtual void onStateStart(void *dataPtr) {
 
 		}
 

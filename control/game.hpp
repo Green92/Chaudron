@@ -8,8 +8,6 @@ using namespace Sifteo;
 
 class Game {
 
-	private:
-
 	protected:
 		State *currentState = NULL;
 
@@ -52,11 +50,11 @@ class Game {
 
 	public:
 
-		void runState(State *state) {
+		void runState(State *state, void *dataPtr = NULL) {
 			this->currentState = state;
 
 			if (state != NULL) {
-				state->start();
+				state->start(dataPtr);
 			}
 		}
 
@@ -88,6 +86,6 @@ class Game {
 
 };
 
-void State::runState(State *state) {
-	game->runState(state);
+void State::runState(State *state, void *dataPtr) {
+	game->runState(state, dataPtr);
 }

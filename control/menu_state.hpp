@@ -20,16 +20,16 @@ static struct MenuAssets menuAssets = {
 
 class StartMenuState : public State {
 	private:
-		Sifteo::VideoBuffer vBuf[MAX_CUBES];
-		GameState *gameState;
+		VideoBuffer vBuf[MAX_CUBES];
+		State *gameState;
 		Menu menu;
 
 	public:
-		StartMenuState(Game *game, GameState *gameState) :State(game) {
+		StartMenuState(Game *game, VideoBuffer *vBuf, State *gameState) :State(game, vBuf) {
 			this->gameState = gameState;
 		}
 
-		void onStateStart() {
+		void onStateStart(void *dataPtr) {
 			for (CubeID cube=0; cube<MAX_CUBES; ++cube) {
 				auto &vid = vBuf[cube];
 		        vid.initMode(BG0);

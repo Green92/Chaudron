@@ -11,6 +11,7 @@
 
 #include "control/game_state.hpp"
 #include "control/menu_state.hpp"
+ #include "control/score_state.hpp"
 
 /**
  * Espace de nom par defaut
@@ -52,8 +53,14 @@ static AssetSlot MenuSlot = AssetSlot::allocate()
  void main() {
 
  	static Game game;
- 	static GameState gameState(&game);
- 	static StartMenuState menuState(&game, &gameState);
+
+ 	static VideoBuffer vBuf[MAX_CUBES];
+
+ 	static ScoreState scoreState(&game, vBuf);
+ 	static GameState gameState(&game, vBuf, &scoreState);
+ 	static StartMenuState menuState(&game, vBuf, &gameState);
+
+ 	scoreState.setNextState(&menuState);
 
  	game.runState(&menuState);
 

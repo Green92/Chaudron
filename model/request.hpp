@@ -5,7 +5,7 @@
 
 #include "outcome.hpp"
 
-#define MAX_OUTCOME 20
+#define MAX_OUTCOME 11
 
 typedef Array<Outcome, MAX_OUTCOME, unsigned char> OutcomeArray;
 

@@ -13,13 +13,20 @@
 
 #include "state.hpp"
 
+#define SECOND_IN_A_GAME 120
+#define MILLIS_IN_A_SECOND 1000
+#define TIMER_VALUE SECOND_IN_A_GAME * MILLIS_IN_A_SECOND
+#define TIMER_LIMIT SECOND_IN_A_GAME * MILLIS_IN_A_SECOND * 20 / 100
+
 class GameState : public State {
 	private:
+		State *nextState = NULL;
 		GameModel gameModel;
 		AudioManager audioManager;
 		Requests requests;
-		VideoBuffer vBuf[MAX_CUBES];
-		int scoreIncrement = -1;
+		int scoreIncrement;
+		int timer;
+		bool musicChanged;
 
 		void checkAssoc(unsigned firstID, unsigned secondID) {
 			const Association *assoc = Associations::search(gameModel.getCubeRole(firstID), gameModel.getCubeRole(secondID));
@@ -83,18 +90,26 @@ class GameState : public State {
 		}
 
 	public:
-		GameState(Game *game) :State(game) {
-
+		GameState(Game *game, VideoBuffer *vBuf, State *nextState) :State(game, vBuf) {
+			this->nextState = nextState;
 		}
 
 		void onCubeConnected(unsigned id) {
 			vBuf[id].attach(id);
 			Role role = gameModel.getCubeRole(id);
 			vBuf[id].initMode(role == CAULDRON ? BG0_BG1 : BG0);
+			vBuf[id].bg0.erase();
+			vBuf[id].bg1.erase();
+			vBuf[id].bg1.eraseMask();
 			drawRole(id, role);
 		}
 
-		void onStateStart() {
+		void onStateStart(void *dataPtr) {
+			gameModel = GameModel();
+			scoreIncrement = -1;
+			timer = TIMER_VALUE;
+			musicChanged = false;
+
 			gameModel.setCurrentRequest(requests.getRandomRequest());
 
 			drawRequest(gameModel.getCurrentRequest()->getString());
@@ -135,6 +150,19 @@ class GameState : public State {
 				str << scoreIncrement;
 
 				TextRenderUtil::drawCenteredTextMonoLine(vBuf, 15, str.c_str());
+			}
+
+			timer -= deltaTime.milliseconds();
+
+			if (timer <= TIMER_LIMIT && !musicChanged) {
+				musicChanged = true;
+				LOG("CHANGING MUSIC\n");
+				audioManager.playMusic(MusiqueRapide);
+			}
+
+			if (timer <= 0) {
+				audioManager.stopMusic();
+				runState(nextState, (void *)&gameModel);
 			}
 		}
 };

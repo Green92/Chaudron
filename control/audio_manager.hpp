@@ -15,6 +15,7 @@ class AudioManager {
 	public:
 		bool playMusic(const AssetAudio &music) {
 			if (musicChannelNumber != UNDEFINED_CHANNEL) {
+				Sifteo::AudioChannel(musicChannelNumber).stop();
 				return Sifteo::AudioChannel(musicChannelNumber).play(music, Sifteo::AudioChannel::REPEAT);
 			}
 

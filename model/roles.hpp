@@ -43,34 +43,6 @@ const Sifteo::AssetImage NullImage = {
 
 #define ROLE_NUMBER 24
 
-const static char *roles_names[] = {
-	 "Chaudron",
-	 "Yeux",
-	 "Insectes",
-	 "Mandragore",
-	 "Champignons",
-	 "Smoothie de Vision",
-	 "Oeil Sauteur",
-	 "Pate empoisonnee",
-	 "Tabac d'Insectes",
-	 "Infusion Hallucinogene",
-	 "Potion d'Aveuglement",
-	 "Porridge aux Yeux",
-	 "Mouton Oculaire",
-	 "Slime",
-	 "Gateau Empoisonne",
-	 "Poudre Prophétique",
-	 "Potion de Sommeil",
-	 "Dernier P'tit Dej",
-	 "Oeil Enrage",
-	 "Oracle Miniature",
-	 "Cookie au Cancer",
-	 "Tabac Aveuglant",
-	 "Cocktail de la Verité",
-	 "Gouttes pour les yeux"
-
-};
-
 const static Sifteo::AssetImage roles_images[] = {
 	Cauldron,
 	Eyes,
@@ -108,10 +80,6 @@ const static Role initialRoles[MAX_CUBES] = {
 
 class Roles {
 	public:
-		inline static const char *getRoleName(Role role) {
-			return roles_names[role];
-		}
-
 		inline static const AssetImage *getRoleImage(Role role) {
 			return &roles_images[role];
 		}

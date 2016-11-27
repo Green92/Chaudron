@@ -54,16 +54,14 @@ class Game {
 
 		void runState(State *state) {
 			this->currentState = state;
-			state->start();
+
+			if (state != NULL) {
+				state->start();
+			}
 		}
 
 		unsigned run() {
 			LOG("Game : launched\n");
-
-			if (currentState == NULL) {
-				LOG("Game : no state defined : exiting\n");
-				return 1;
-			}
 
 			listenEvents();
 
@@ -74,6 +72,11 @@ class Game {
 		    TimeStep ts;
 		    while (true)
 		    {
+		    	if (currentState == NULL) {
+					LOG("Game : no state defined : exiting\n");
+					return 1;
+				}
+
 		    	currentState->updateState(ts.delta());
 
 		        System::paint();

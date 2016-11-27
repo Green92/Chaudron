@@ -10,6 +10,7 @@
 #include "control/game.hpp"
 
 #include "control/game_state.hpp"
+#include "control/menu_state.hpp"
 
 /**
  * Espace de nom par defaut
@@ -38,6 +39,12 @@ static AssetSlot ElementsSlot = AssetSlot::allocate()
 static AssetSlot FontsSlot = AssetSlot::allocate()
     .bootstrap(Fonts);
 
+/**
+ * Charge les images du menu en memoire
+ */
+static AssetSlot MenuSlot = AssetSlot::allocate()
+    .bootstrap(MenuImages);
+
 
 /**
  * Point d'entree du programme
@@ -45,9 +52,10 @@ static AssetSlot FontsSlot = AssetSlot::allocate()
  void main() {
 
  	static Game game;
- 	static GameState playState(&game);
+ 	static GameState gameState(&game);
+ 	static StartMenuState menuState(&game, &gameState);
 
- 	game.runState(&playState);
+ 	game.runState(&menuState);
 
     game.run();
 

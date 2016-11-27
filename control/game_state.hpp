@@ -8,20 +8,19 @@
 #include "../model/requests.hpp"
 #include "../model/associations.hpp"
 
-#include "../view/game_renderer.hpp"
-
 #include "audio_manager.hpp"
+#include "text_render_util.hpp"
 
 #include "state.hpp"
 
 class GameState : public State {
 	private:
 		GameModel gameModel;
-		GameRenderer renderer = GameRenderer(&gameModel);
 		AudioManager audioManager;
 		Requests requests;
+		VideoBuffer vBuf[MAX_CUBES];
+		int scoreIncrement = -1;
 
-	protected:
 		void checkAssoc(unsigned firstID, unsigned secondID) {
 			const Association *assoc = Associations::search(gameModel.getCubeRole(firstID), gameModel.getCubeRole(secondID));
 
@@ -31,8 +30,8 @@ class GameState : public State {
 
     			audioManager.playSound(CombinaisonValide);
 
-	        	renderer.updateCube(firstID);
-	        	renderer.updateCube(secondID);
+	        	drawRole(firstID, assoc->getResult1());
+	        	drawRole(secondID, assoc->getResult2());
 	        } else {
 	        	audioManager.playSound(MauvaiseCombinaison);
 	        }
@@ -51,8 +50,8 @@ class GameState : public State {
 				gameModel.increaseScore(outcome->getGratification());
 				gameModel.resetCubeRole(otherId);
 
-				renderer.updateCube(firstID);
-				renderer.updateCube(secondID);
+				drawRole(otherId, gameModel.getCubeRole(otherId));
+				drawRequest(gameModel.getCurrentRequest()->getString());
 
 				audioManager.playSound(BesoinRempli);
 
@@ -68,9 +67,19 @@ class GameState : public State {
 			if (gameModel.getCubeRole(cubeId) != initialRole) {
 				gameModel.resetCubeRole(cubeId);
 
-				renderer.updateCube(cubeId);
+				drawRole(cubeId, initialRole);
 				audioManager.playSound(Reset);
 			}
+		}
+
+		void drawRole(unsigned char cubeId, Role role) {
+			vBuf[cubeId].bg0.image(vec(0, 0), *Roles::getRoleImage(role));
+		}
+
+		void drawRequest(const char *request) {
+			vBuf->bg1.eraseMask();
+			vBuf->bg1.erase();
+			TextRenderUtil::drawCenteredTextMultiLine(vBuf, 6, request, 1);
 		}
 
 	public:
@@ -79,14 +88,16 @@ class GameState : public State {
 		}
 
 		void onCubeConnected(unsigned id) {
-			renderer.registerCube(id);
-			renderer.updateCube(id);
+			vBuf[id].attach(id);
+			Role role = gameModel.getCubeRole(id);
+			vBuf[id].initMode(role == CAULDRON ? BG0_BG1 : BG0);
+			drawRole(id, role);
 		}
 
 		void onStateStart() {
 			gameModel.setCurrentRequest(requests.getRandomRequest());
 
-			renderer.updateCube(0);
+			drawRequest(gameModel.getCurrentRequest()->getString());
 			audioManager.playMusic(MusiqueLente);
 		}
 
@@ -115,7 +126,16 @@ class GameState : public State {
 		}
 
 		void updateState(TimeDelta deltaTime) {
+			int score = gameModel.getScore();
 
+			if (scoreIncrement != score) {
+				scoreIncrement ++;
+
+				String<4> str;
+				str << scoreIncrement;
+
+				TextRenderUtil::drawCenteredTextMonoLine(vBuf, 15, str.c_str());
+			}
 		}
 };
 

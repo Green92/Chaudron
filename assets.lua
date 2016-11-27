@@ -36,6 +36,15 @@ Fonts = group{quality = 10}
 Font16					= image{"assets/png/Font_16x16.png",				 width=16, 	height=16}
 Font8					= image{"assets/png/Font_8x8.png",					 width=8, 	height=8 }
 
+MenuImages = group{quality = 10}
+StripeTile 				= image{"assets/png/stripes.png", pinned=1 }
+Tip0 					= image{"assets/png/Tip0.png"}
+Tip1 					= image{"assets/png/Tip1.png"}
+IconQuit				= image{"assets/png/IconQuit.png"}
+IconPlay				= image{"assets/png/IconPlay.png"}
+Footer					= image{"assets/png/Footer.png"}
+LabelEmpty				= image{"assets/png/LabelEmpty.png"}
+
 Sounds = group{}
 BesoinRempli = 				sound{"assets/wav/BesoinRempli16k.wav"}
 CombinaisonValide = 		sound{"assets/wav/CombinaisonValide16k.wav"}
